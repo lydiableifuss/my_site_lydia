@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Authors | Lydia Site</title>
+    <link>/authors/</link>
+      <atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
+    <description>Authors</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 07 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>Authors</title>
+      <link>/authors/</link>
+    </image>
+    
+    <item>
+      <title></title>
+      <link>/authors/admin/</link>
+      <pubDate>Sun, 07 Apr 2019 00:00:00 +0000</pubDate>
+      <guid>/authors/admin/</guid>
+      <description>&lt;p&gt;Lydia Bleifuss graduated from Lewis &amp;amp; Clark College in 2016 with a Bachelor of Arts in Environmental Studies and concentration in Surface Water Conflicts. During her undergraduate career Lydia focused on transboundary river management in the Western U.S. and abroad. As an undergraduate, Lydia interned for Waterkeeper Alliance researching over-allocated and polluted waterways in South America and the Southwestern U.S. Lydia went on to intern for WildEarth Guardians’ River Program where she built relationships with Rio Grande senior water rights holders and worked to identify water banking opportunities. After four seasons as a river guide and remote work as both the Futaleufú Riverkeeper International Relations Coordinator and Central Colorado Conservancy Watershed Program Volunteer, Lydia came to the Bren School. As a second year Master’s student and Sustainable Water Markets Fellow specializing in Water Resources Management, Lydia is focusing on how surface and groundwater interactions can be better integrated into river basin management considering climate change.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Robert Ford</title>
+      <link>/authors/robert-ford/</link>
+      <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
+      <guid>/authors/robert-ford/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
