@@ -1,0 +1,27 @@
+---
+title: 'LB post '
+author: ''
+date: '2020-01-09'
+slug: my-new-project
+categories: []
+tags:
+  - gp
+  - thesis
+  - group project
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-01-09T15:02:28-08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+```{r}
+plot(cars)
+```
+
