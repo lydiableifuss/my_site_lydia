@@ -33,17 +33,7 @@
   </url>
   
   <url>
-    <loc>/tags/gp/</loc>
-    <lastmod>2020-01-09T15:02:28-08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/group-project/</loc>
-    <lastmod>2020-01-09T15:02:28-08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/project/my-new-project/</loc>
+    <loc>/tags/analysis/</loc>
     <lastmod>2020-01-09T15:02:28-08:00</lastmod>
   </url>
   
@@ -53,12 +43,12 @@
   </url>
   
   <url>
-    <loc>/tags/</loc>
+    <loc>/project/snow_show_hare/</loc>
     <lastmod>2020-01-09T15:02:28-08:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/thesis/</loc>
+    <loc>/tags/</loc>
     <lastmod>2020-01-09T15:02:28-08:00</lastmod>
   </url>
   
@@ -220,10 +210,6 @@
   <url>
     <loc>/publication/conference-paper/</loc>
     <lastmod>2013-07-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/project/awesome-project/</loc>
   </url>
   
   <url>
