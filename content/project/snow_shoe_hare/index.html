@@ -1,0 +1,322 @@
+---
+title: 'Snow Shoe Hare'
+author: ''
+date: '2020-01-09'
+slug: snow_show_hare
+categories: []
+tags:
+ - analysis
+subtitle: ''
+summary: 'Statistical analysis of snow shoe hare seasonal size.'
+authors: []
+lastmod: '2020-01-09T15:02:28-08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p><strong>Snowshoe Hare, or Lepus americanus, in Alaska.</strong> Photo: Jean Beaufort</p>
+<div id="introductory-summary" class="section level5">
+<h5>1] Introductory Summary</h5>
+<p>Snowshoe Hares, especially charismatic and large hind-footed rabbits, thrive in northern boreal forests that encompass Alaskan, Canadian and Russian northern latitudes. Snowshoe Hares are a ‘keystone’ prey species, which means that other flora and fauna species will react, often dramatically, to changes in Snowshoe populations. Capture and release studies of Snowshoes have indicated that these rabbits have an 8-11 year population fluctuation cycle (Kielland et. al 2017). This analysis aims to add to that body of work, and uses an 8 year time span of Snowshoe trapping records to look specifically at seasonal changes in rabbit weights.</p>
+<p>Data Citation: Kielland K., F. S. Chapin, R. W. Ruess. 2017. Snowshoe hare physical data in Bonanza Creek Experimental Forest: 1999-Present. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/03dce4856d79b91557d8e6ce2cbcdc14" class="uri">https://doi.org/10.6073/pasta/03dce4856d79b91557d8e6ce2cbcdc14</a>.</p>
+</div>
+<div id="photo" class="section level5">
+<h5>2] Photo</h5>
+<div class="figure">
+<img src="Toklat_Alaska.jpg" alt="East Fork of Toklat River which drains Tanana Valley, habitat to Snowshoe Hares. Photo: Paxson Woelber" />
+<p class="caption"><strong>East Fork of Toklat River which drains Tanana Valley, habitat to Snowshoe Hares.</strong> Photo: Paxson Woelber</p>
+</div>
+</div>
+<div id="code" class="section level5">
+<h5>3] Code</h5>
+<p><strong>3(A).</strong> Read in data (Snow Show Hare information) and clean.</p>
+<pre class="r"><code>bunnies &lt;- read_csv(&quot;showshoe_Iter.csv&quot;) %&gt;% 
+  clean_names() #Make column headings lower case and with no spaces.
+
+bunnies$Date &lt;- as.Date(bunnies$date, &quot;%m/%d/%Y&quot;) #Want to make sure date data is in usable format.
+
+bunnies &lt;- bunnies %&gt;% 
+  mutate(month = month(Date)) #Adding a month only column for analysis later. 
+
+bunnies &lt;- bunnies %&gt;% 
+  mutate(year = year(Date)) #Adding a year only column for analysis later. 
+
+#There are a lot of NAs in this dataset, and before more cleaning and deciding on variables to graph, I want to explore the data. </code></pre>
+<p><strong>3(B).</strong> Explore data and missingness.</p>
+<pre class="r"><code>bun_miss_var &lt;- gg_miss_var(bunnies)#Time and notes appear to be mostly missing, nearly half of the dataset for age and hind foot is missing. Many NAs for right ear tag, weight and sex as well. 
+
+skim_bun &lt;- skim(bunnies) #Based on my understanding of missingness in the variabbles here, and having reviewed the metadata (know what columns mean), going to explore: 1. &#39;grid&#39; and &#39;trap&#39; to see how dispersered the traps are in the three grids through time, and if relatively well dispersed between the three grids, 2. &#39;weight&#39; and &#39;grids&#39; to see if females and males are hanging out in different areas or mixed (PLAN).
+
+bunnies_clean &lt;- bunnies %&gt;% 
+  select(sex, grid, Date, weight, trap, study, month, year) %&gt;% 
+  drop_na() %&gt;% #Needed to wrangle columns I wanted and then format sex column to normalize the indication of male and female and get rid of NAs
+    mutate(grid = str_to_lower(grid)) %&gt;%  #Wanted to make all lowercase so &#39;Bonbs&#39; was changed to &#39;bonds&#39; to match and so unique strings were represented correctly (&#39;bonrip&#39; &#39;bonbs&#39; and &#39;bonmat&#39;). 
+  mutate(sex = str_to_lower(sex)) %&gt;%  #there are male and female values with a &#39;?&#39; which I am not going to include because the sex is uncertain
+  filter(sex == &quot;m&quot; | sex == &quot;f&quot;)
+
+skim_bun_clean &lt;-skim(bunnies_clean) #Explore finalized/clean dataset. </code></pre>
+<p><strong>3(C).</strong> Explore above plan in graphs.</p>
+<pre class="r"><code>bunnies_plot_test &lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = trap, x = Date, color = grid), alpha = 0.5, size = 1)
+#bunnies_plot_test 
+
+#***This plot indicates that Bonmat grid was used in the early 2000s, and Bonbs was used in the later years. Going to not include all in final plot because they are still helpful in looking at weight dispursement, but now going to color by sex. 
+
+bunnies_plot_sex &lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = sex, color = sex), alpha = 0.5, size = 1)
+#bunnies_plot_sex
+
+#***It appears that females can grow to be larger than males.
+bunnies_f &lt;- nrow(subset(bunnies_clean,sex == &quot;f&quot;)) #1463 females
+bunnies_m &lt;- nrow(subset(bunnies_clean,sex == &quot;m&quot;)) #1063 males 
+
+bunnies_plot_study &lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = Date, color = study), alpha = 0.5, size = 1) +
+  facet_wrap(~sex) 
+#bunnies_plot_study
+
+#***Most studies have been done for populaiton, with a greater variety of studies done recently. 
+
+
+##Final plan: due to the increase amount of population studies happending from 2004 to 2012, will use this date range when creating final graph. Also great because 8 years should capture most of a populaiton fluctuation. </code></pre>
+<p><strong>3(D).</strong> Create finalized graph.</p>
+<pre class="r"><code>bunnies_plot &lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = Date, color = sex), alpha = 0.5, size = 1.2) +
+  xlab(&quot;\nDate&quot;) +
+  ylab(&quot;Weight (grams)&quot;) +
+  labs(title = &quot;Snowshoe Hare Weight and Sex&quot;, subtitle = &quot;August 2004 - August 2012&quot;, caption = &quot;Figure 1. Snowshoe Hare Weight and Sex (August 2004 - August 2012).\n Seasonal weight fluctuations of both male and female Snowshoes across 8 years, or most of a population cycle.&quot;) +
+  theme(plot.title = element_text(size=10)) +
+  guides(color=guide_legend(&quot;Snowshoe Hare Sex&quot;)) +
+  scale_x_date(limits = as.Date(c(&quot;2004-09-01&quot;,&quot;2012-09-01&quot;))) +
+  scale_y_continuous(limits = c(0,2500))+
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) +
+  theme(legend.title = element_text(size=8), 
+        legend.position = &quot;bottom&quot;, 
+        legend.background = element_rect(fill=&quot;white&quot;,
+                                  size=0.5, linetype=&quot;solid&quot;, 
+                                  colour =&quot;black&quot;)) +
+  scale_color_manual(labels = c(&quot;Female&quot;, &quot;Male&quot;), values = c(&quot;yellow3&quot;,&quot;tomato2&quot;))
+
+bunnies_plot</code></pre>
+<p><img src="/project/snow_shoe_hare/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><strong>3(E)</strong> Data and stats formatting for Kable table.</p>
+<pre class="r"><code>#Summarize by month, max and min female and male weights 6 years total 
+
+bunnies_female &lt;- bunnies_clean %&gt;% 
+  filter(sex == &quot;f&quot;) %&gt;% 
+  select(Date, weight, sex, month, year) %&gt;% 
+  filter(Date &gt; &quot;2004-09-01&quot;, Date &lt; &quot;2012-09-01&quot;) %&gt;% 
+  group_by(month) %&gt;% 
+  dplyr::summarize(max_weight = max(weight), min_weight = min(weight)) %&gt;% 
+  mutate(weight_range = (max_weight - min_weight)) #Finding the range, more helpful than min and max in this case. 
+
+bunnies_female$month &lt;- month(bunnies_female$month, label = TRUE) #Converting month number to name.</code></pre>
+<p><strong>3(F)</strong> One last exploratory graph.</p>
+<pre class="r"><code>#Wanted to vizualize weight range table specifically. 
+
+bunnies_plot_range &lt;- ggplot(data = bunnies_female) +
+  geom_point(aes(y = weight_range, x = month), alpha = 0.8, size = 3) +
+  xlab(&quot;Date&quot;) +
+  ylab(&quot;Weight Range (grams)&quot;) +
+  ggtitle(&quot;Female Snowshoe Hare Weight Range\n(August 2004 - August 2012)&quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5)) 
+
+#bunnies_plot_range</code></pre>
+<p><strong>3(G)</strong> Finalized Kable table.</p>
+<pre class="r"><code>bunnies_table &lt;- bunnies_female %&gt;% 
+  select(&quot;month&quot;, &quot;max_weight&quot;, &quot;min_weight&quot;, &quot;weight_range&quot;) #Creating dataframe with only columns needed in table. 
+
+colnames(bunnies_table) &lt;- c(&quot;Month&quot;, &quot;Maximum Weight&quot;, &quot;Minimum Weight&quot;, &quot;Weight Range&quot;)
+
+kable(bunnies_table, caption = &quot;Table 1. Seasonal Female Snowshoe Hare Weight Fluctuations. For all female Snowshoes trapped from August 2004 - August 2012, maximum and minimum weights (grams) were derived by month. The range between these values is also displayed here to indicate seasonal fluctuations in female Snowshoe size, the size ranges peaking in summer months.&quot;) %&gt;% 
+  kable_styling(bootstrap_options = &quot;striped&quot;,
+                &quot;responsive&quot;,
+                full_width = FALSE) </code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-7">Table 1: </span>Table 1. Seasonal Female Snowshoe Hare Weight Fluctuations. For all female Snowshoes trapped from August 2004 - August 2012, maximum and minimum weights (grams) were derived by month. The range between these values is also displayed here to indicate seasonal fluctuations in female Snowshoe size, the size ranges peaking in summer months.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Month
+</th>
+<th style="text-align:right;">
+Maximum Weight
+</th>
+<th style="text-align:right;">
+Minimum Weight
+</th>
+<th style="text-align:right;">
+Weight Range
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Feb
+</td>
+<td style="text-align:right;">
+1660
+</td>
+<td style="text-align:right;">
+1250
+</td>
+<td style="text-align:right;">
+410
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mar
+</td>
+<td style="text-align:right;">
+1820
+</td>
+<td style="text-align:right;">
+1040
+</td>
+<td style="text-align:right;">
+780
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Apr
+</td>
+<td style="text-align:right;">
+1710
+</td>
+<td style="text-align:right;">
+1040
+</td>
+<td style="text-align:right;">
+670
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+May
+</td>
+<td style="text-align:right;">
+1900
+</td>
+<td style="text-align:right;">
+720
+</td>
+<td style="text-align:right;">
+1180
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jun
+</td>
+<td style="text-align:right;">
+2220
+</td>
+<td style="text-align:right;">
+240
+</td>
+<td style="text-align:right;">
+1980
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jul
+</td>
+<td style="text-align:right;">
+2170
+</td>
+<td style="text-align:right;">
+650
+</td>
+<td style="text-align:right;">
+1520
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aug
+</td>
+<td style="text-align:right;">
+2000
+</td>
+<td style="text-align:right;">
+380
+</td>
+<td style="text-align:right;">
+1620
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sep
+</td>
+<td style="text-align:right;">
+2060
+</td>
+<td style="text-align:right;">
+560
+</td>
+<td style="text-align:right;">
+1500
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oct
+</td>
+<td style="text-align:right;">
+1650
+</td>
+<td style="text-align:right;">
+1180
+</td>
+<td style="text-align:right;">
+470
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nov
+</td>
+<td style="text-align:right;">
+1930
+</td>
+<td style="text-align:right;">
+1060
+</td>
+<td style="text-align:right;">
+870
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dec
+</td>
+<td style="text-align:right;">
+1700
+</td>
+<td style="text-align:right;">
+1160
+</td>
+<td style="text-align:right;">
+540
+</td>
+</tr>
+</tbody>
+</table>
+</div>

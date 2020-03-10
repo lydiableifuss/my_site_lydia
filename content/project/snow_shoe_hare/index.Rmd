@@ -1,0 +1,198 @@
+---
+title: 'Snow Shoe Hare'
+author: ''
+date: '2020-01-09'
+slug: snow_show_hare
+categories: []
+tags:
+ - analysis
+subtitle: ''
+summary: 'Statistical analysis of snow shoe hare seasonal size.'
+authors: []
+lastmod: '2020-01-09T15:02:28-08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(janitor)
+library(naniar)
+library(VIM)
+library(skimr)
+library(ggfortify)
+library(here)
+library(dplyr)
+library(ggplot2)
+library(kableExtra)
+library(lubridate)
+library(tidyr)
+```
+
+
+
+**Snowshoe Hare, or Lepus americanus, in Alaska.** \n Photo: Jean Beaufort
+
+#####1] Introductory Summary 
+
+Snowshoe Hares, especially charismatic and large hind-footed rabbits, thrive in northern boreal forests that encompass Alaskan, Canadian and Russian northern latitudes. Snowshoe Hares are a ‘keystone’ prey species, which means that other flora and fauna species will react, often dramatically, to changes in Snowshoe populations. Capture and release studies of Snowshoes have indicated that these rabbits have an 8-11 year population fluctuation cycle (Kielland et. al 2017). This analysis aims to add to that body of work, and uses an 8 year time span of Snowshoe trapping records to look specifically at seasonal changes in rabbit weights.
+
+
+Data Citation: Kielland K., F. S. Chapin, R. W. Ruess. 2017. Snowshoe hare physical data in Bonanza Creek Experimental Forest: 1999-Present. Environmental Data Initiative. https://doi.org/10.6073/pasta/03dce4856d79b91557d8e6ce2cbcdc14.
+
+
+
+
+#####2] Photo
+
+![**East Fork of Toklat River which drains Tanana Valley, habitat to Snowshoe Hares.** \n Photo: Paxson Woelber](Toklat_Alaska.jpg)
+
+
+
+
+#####3] Code
+
+
+**3(A).** Read in data (Snow Show Hare information) and clean. 
+
+```{r}
+bunnies <- read_csv("showshoe_Iter.csv") %>% 
+  clean_names() #Make column headings lower case and with no spaces.
+
+bunnies$Date <- as.Date(bunnies$date, "%m/%d/%Y") #Want to make sure date data is in usable format.
+
+bunnies <- bunnies %>% 
+  mutate(month = month(Date)) #Adding a month only column for analysis later. 
+
+bunnies <- bunnies %>% 
+  mutate(year = year(Date)) #Adding a year only column for analysis later. 
+
+#There are a lot of NAs in this dataset, and before more cleaning and deciding on variables to graph, I want to explore the data. 
+```
+
+
+**3(B).** Explore data and missingness. 
+
+```{r}
+bun_miss_var <- gg_miss_var(bunnies)#Time and notes appear to be mostly missing, nearly half of the dataset for age and hind foot is missing. Many NAs for right ear tag, weight and sex as well. 
+
+skim_bun <- skim(bunnies) #Based on my understanding of missingness in the variabbles here, and having reviewed the metadata (know what columns mean), going to explore: 1. 'grid' and 'trap' to see how dispersered the traps are in the three grids through time, and if relatively well dispersed between the three grids, 2. 'weight' and 'grids' to see if females and males are hanging out in different areas or mixed (PLAN).
+
+bunnies_clean <- bunnies %>% 
+  select(sex, grid, Date, weight, trap, study, month, year) %>% 
+  drop_na() %>% #Needed to wrangle columns I wanted and then format sex column to normalize the indication of male and female and get rid of NAs
+    mutate(grid = str_to_lower(grid)) %>%  #Wanted to make all lowercase so 'Bonbs' was changed to 'bonds' to match and so unique strings were represented correctly ('bonrip' 'bonbs' and 'bonmat'). 
+  mutate(sex = str_to_lower(sex)) %>%  #there are male and female values with a '?' which I am not going to include because the sex is uncertain
+  filter(sex == "m" | sex == "f")
+
+skim_bun_clean <-skim(bunnies_clean) #Explore finalized/clean dataset. 
+```
+
+
+**3(C).** Explore above plan in graphs. 
+
+```{r}
+bunnies_plot_test <- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = trap, x = Date, color = grid), alpha = 0.5, size = 1)
+#bunnies_plot_test 
+
+#***This plot indicates that Bonmat grid was used in the early 2000s, and Bonbs was used in the later years. Going to not include all in final plot because they are still helpful in looking at weight dispursement, but now going to color by sex. 
+
+bunnies_plot_sex <- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = sex, color = sex), alpha = 0.5, size = 1)
+#bunnies_plot_sex
+
+#***It appears that females can grow to be larger than males.
+bunnies_f <- nrow(subset(bunnies_clean,sex == "f")) #1463 females
+bunnies_m <- nrow(subset(bunnies_clean,sex == "m")) #1063 males 
+
+bunnies_plot_study <- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = Date, color = study), alpha = 0.5, size = 1) +
+  facet_wrap(~sex) 
+#bunnies_plot_study
+
+#***Most studies have been done for populaiton, with a greater variety of studies done recently. 
+
+
+##Final plan: due to the increase amount of population studies happending from 2004 to 2012, will use this date range when creating final graph. Also great because 8 years should capture most of a populaiton fluctuation. 
+```
+
+
+**3(D).** Create finalized graph.
+
+```{r}
+bunnies_plot <- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = Date, color = sex), alpha = 0.5, size = 1.2) +
+  xlab("\nDate") +
+  ylab("Weight (grams)") +
+  labs(title = "Snowshoe Hare Weight and Sex", subtitle = "August 2004 - August 2012", caption = "Figure 1. Snowshoe Hare Weight and Sex (August 2004 - August 2012).\n Seasonal weight fluctuations of both male and female Snowshoes across 8 years, or most of a population cycle.") +
+  theme(plot.title = element_text(size=10)) +
+  guides(color=guide_legend("Snowshoe Hare Sex")) +
+  scale_x_date(limits = as.Date(c("2004-09-01","2012-09-01"))) +
+  scale_y_continuous(limits = c(0,2500))+
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) +
+  theme(legend.title = element_text(size=8), 
+        legend.position = "bottom", 
+        legend.background = element_rect(fill="white",
+                                  size=0.5, linetype="solid", 
+                                  colour ="black")) +
+  scale_color_manual(labels = c("Female", "Male"), values = c("yellow3","tomato2"))
+
+bunnies_plot
+```
+
+
+**3(E)** Data and stats formatting for Kable table.
+
+```{r}
+#Summarize by month, max and min female and male weights 6 years total 
+
+bunnies_female <- bunnies_clean %>% 
+  filter(sex == "f") %>% 
+  select(Date, weight, sex, month, year) %>% 
+  filter(Date > "2004-09-01", Date < "2012-09-01") %>% 
+  group_by(month) %>% 
+  dplyr::summarize(max_weight = max(weight), min_weight = min(weight)) %>% 
+  mutate(weight_range = (max_weight - min_weight)) #Finding the range, more helpful than min and max in this case. 
+
+bunnies_female$month <- month(bunnies_female$month, label = TRUE) #Converting month number to name.
+```
+
+
+**3(F)** One last exploratory graph. 
+
+```{r}
+#Wanted to vizualize weight range table specifically. 
+
+bunnies_plot_range <- ggplot(data = bunnies_female) +
+  geom_point(aes(y = weight_range, x = month), alpha = 0.8, size = 3) +
+  xlab("Date") +
+  ylab("Weight Range (grams)") +
+  ggtitle("Female Snowshoe Hare Weight Range\n(August 2004 - August 2012)") +
+  theme(plot.title = element_text(size=12)) +
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5)) 
+
+#bunnies_plot_range
+```
+
+
+**3(G)** Finalized Kable table.
+
+```{r}
+bunnies_table <- bunnies_female %>% 
+  select("month", "max_weight", "min_weight", "weight_range") #Creating dataframe with only columns needed in table. 
+
+colnames(bunnies_table) <- c("Month", "Maximum Weight", "Minimum Weight", "Weight Range")
+
+kable(bunnies_table, caption = "Table 1. Seasonal Female Snowshoe Hare Weight Fluctuations. For all female Snowshoes trapped from August 2004 - August 2012, maximum and minimum weights (grams) were derived by month. The range between these values is also displayed here to indicate seasonal fluctuations in female Snowshoe size, the size ranges peaking in summer months.") %>% 
+  kable_styling(bootstrap_options = "striped",
+                "responsive",
+                full_width = FALSE) 
+```
