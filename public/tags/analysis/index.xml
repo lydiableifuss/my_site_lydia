@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>analysis | Lydia Bleifuss</title>
+    <link>/tags/analysis/</link>
+      <atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <description>analysis</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 09 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>analysis</title>
+      <link>/tags/analysis/</link>
+    </image>
+    
+    <item>
+      <title>Snow Shoe Hare</title>
+      <link>/project/snow_show_hare/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>/project/snow_show_hare/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Snowshoe Hare, or Lepus americanus, in Alaska.&lt;/strong&gt; Photo: Jean Beaufort&lt;/p&gt;
+&lt;div id=&#34;introductory-summary&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;1] Introductory Summary&lt;/h5&gt;
+&lt;p&gt;Snowshoe Hares, especially charismatic and large hind-footed rabbits, thrive in northern boreal forests that encompass Alaskan, Canadian and Russian northern latitudes. Snowshoe Hares are a ‘keystone’ prey species, which means that other flora and fauna species will react, often dramatically, to changes in Snowshoe populations. Capture and release studies of Snowshoes have indicated that these rabbits have an 8-11 year population fluctuation cycle (Kielland et. al 2017). This analysis aims to add to that body of work, and uses an 8 year time span of Snowshoe trapping records to look specifically at seasonal changes in rabbit weights.&lt;/p&gt;
+&lt;p&gt;Data Citation: Kielland K., F. S. Chapin, R. W. Ruess. 2017. Snowshoe hare physical data in Bonanza Creek Experimental Forest: 1999-Present. Environmental Data Initiative. &lt;a href=&#34;https://doi.org/10.6073/pasta/03dce4856d79b91557d8e6ce2cbcdc14&#34; class=&#34;uri&#34;&gt;https://doi.org/10.6073/pasta/03dce4856d79b91557d8e6ce2cbcdc14&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;photo&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;2] Photo&lt;/h5&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;Toklat_Alaska.jpg&#34; alt=&#34;East Fork of Toklat River which drains Tanana Valley, habitat to Snowshoe Hares. Photo: Paxson Woelber&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;strong&gt;East Fork of Toklat River which drains Tanana Valley, habitat to Snowshoe Hares.&lt;/strong&gt; Photo: Paxson Woelber&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;code&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;3] Code&lt;/h5&gt;
+&lt;p&gt;&lt;strong&gt;3(A).&lt;/strong&gt; Read in data (Snow Show Hare information) and clean.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bunnies &amp;lt;- read_csv(&amp;quot;showshoe_Iter.csv&amp;quot;) %&amp;gt;% 
+  clean_names() #Make column headings lower case and with no spaces.
+
+bunnies$Date &amp;lt;- as.Date(bunnies$date, &amp;quot;%m/%d/%Y&amp;quot;) #Want to make sure date data is in usable format.
+
+bunnies &amp;lt;- bunnies %&amp;gt;% 
+  mutate(month = month(Date)) #Adding a month only column for analysis later. 
+
+bunnies &amp;lt;- bunnies %&amp;gt;% 
+  mutate(year = year(Date)) #Adding a year only column for analysis later. 
+
+#There are a lot of NAs in this dataset, and before more cleaning and deciding on variables to graph, I want to explore the data. &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3(B).&lt;/strong&gt; Explore data and missingness.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bun_miss_var &amp;lt;- gg_miss_var(bunnies)#Time and notes appear to be mostly missing, nearly half of the dataset for age and hind foot is missing. Many NAs for right ear tag, weight and sex as well. 
+
+skim_bun &amp;lt;- skim(bunnies) #Based on my understanding of missingness in the variabbles here, and having reviewed the metadata (know what columns mean), going to explore: 1. &amp;#39;grid&amp;#39; and &amp;#39;trap&amp;#39; to see how dispersered the traps are in the three grids through time, and if relatively well dispersed between the three grids, 2. &amp;#39;weight&amp;#39; and &amp;#39;grids&amp;#39; to see if females and males are hanging out in different areas or mixed (PLAN).
+
+bunnies_clean &amp;lt;- bunnies %&amp;gt;% 
+  select(sex, grid, Date, weight, trap, study, month, year) %&amp;gt;% 
+  drop_na() %&amp;gt;% #Needed to wrangle columns I wanted and then format sex column to normalize the indication of male and female and get rid of NAs
+    mutate(grid = str_to_lower(grid)) %&amp;gt;%  #Wanted to make all lowercase so &amp;#39;Bonbs&amp;#39; was changed to &amp;#39;bonds&amp;#39; to match and so unique strings were represented correctly (&amp;#39;bonrip&amp;#39; &amp;#39;bonbs&amp;#39; and &amp;#39;bonmat&amp;#39;). 
+  mutate(sex = str_to_lower(sex)) %&amp;gt;%  #there are male and female values with a &amp;#39;?&amp;#39; which I am not going to include because the sex is uncertain
+  filter(sex == &amp;quot;m&amp;quot; | sex == &amp;quot;f&amp;quot;)
+
+skim_bun_clean &amp;lt;-skim(bunnies_clean) #Explore finalized/clean dataset. &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3(C).&lt;/strong&gt; Explore above plan in graphs.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bunnies_plot_test &amp;lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = trap, x = Date, color = grid), alpha = 0.5, size = 1)
+#bunnies_plot_test 
+
+#***This plot indicates that Bonmat grid was used in the early 2000s, and Bonbs was used in the later years. Going to not include all in final plot because they are still helpful in looking at weight dispursement, but now going to color by sex. 
+
+bunnies_plot_sex &amp;lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = sex, color = sex), alpha = 0.5, size = 1)
+#bunnies_plot_sex
+
+#***It appears that females can grow to be larger than males.
+bunnies_f &amp;lt;- nrow(subset(bunnies_clean,sex == &amp;quot;f&amp;quot;)) #1463 females
+bunnies_m &amp;lt;- nrow(subset(bunnies_clean,sex == &amp;quot;m&amp;quot;)) #1063 males 
+
+bunnies_plot_study &amp;lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = Date, color = study), alpha = 0.5, size = 1) +
+  facet_wrap(~sex) 
+#bunnies_plot_study
+
+#***Most studies have been done for populaiton, with a greater variety of studies done recently. 
+
+
+##Final plan: due to the increase amount of population studies happending from 2004 to 2012, will use this date range when creating final graph. Also great because 8 years should capture most of a populaiton fluctuation. &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3(D).&lt;/strong&gt; Create finalized graph.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bunnies_plot &amp;lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = Date, color = sex), alpha = 0.5, size = 1.2) +
+  xlab(&amp;quot;\nDate&amp;quot;) +
+  ylab(&amp;quot;Weight (grams)&amp;quot;) +
+  labs(title = &amp;quot;Snowshoe Hare Weight and Sex&amp;quot;, subtitle = &amp;quot;August 2004 - August 2012&amp;quot;, caption = &amp;quot;Figure 1. Snowshoe Hare Weight and Sex (August 2004 - August 2012).\n Seasonal weight fluctuations of both male and female Snowshoes across 8 years, or most of a population cycle.&amp;quot;) +
+  theme(plot.title = element_text(size=10)) +
+  guides(color=guide_legend(&amp;quot;Snowshoe Hare Sex&amp;quot;)) +
+  scale_x_date(limits = as.Date(c(&amp;quot;2004-09-01&amp;quot;,&amp;quot;2012-09-01&amp;quot;))) +
+  scale_y_continuous(limits = c(0,2500))+
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) +
+  theme(legend.title = element_text(size=8), 
+        legend.position = &amp;quot;bottom&amp;quot;, 
+        legend.background = element_rect(fill=&amp;quot;white&amp;quot;,
+                                  size=0.5, linetype=&amp;quot;solid&amp;quot;, 
+                                  colour =&amp;quot;black&amp;quot;)) +
+  scale_color_manual(labels = c(&amp;quot;Female&amp;quot;, &amp;quot;Male&amp;quot;), values = c(&amp;quot;yellow3&amp;quot;,&amp;quot;tomato2&amp;quot;))
+
+bunnies_plot&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/snow_shoe_hare/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3(E)&lt;/strong&gt; Data and stats formatting for Kable table.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Summarize by month, max and min female and male weights 6 years total 
+
+bunnies_female &amp;lt;- bunnies_clean %&amp;gt;% 
+  filter(sex == &amp;quot;f&amp;quot;) %&amp;gt;% 
+  select(Date, weight, sex, month, year) %&amp;gt;% 
+  filter(Date &amp;gt; &amp;quot;2004-09-01&amp;quot;, Date &amp;lt; &amp;quot;2012-09-01&amp;quot;) %&amp;gt;% 
+  group_by(month) %&amp;gt;% 
+  dplyr::summarize(max_weight = max(weight), min_weight = min(weight)) %&amp;gt;% 
+  mutate(weight_range = (max_weight - min_weight)) #Finding the range, more helpful than min and max in this case. 
+
+bunnies_female$month &amp;lt;- month(bunnies_female$month, label = TRUE) #Converting month number to name.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3(F)&lt;/strong&gt; One last exploratory graph.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Wanted to vizualize weight range table specifically. 
+
+bunnies_plot_range &amp;lt;- ggplot(data = bunnies_female) +
+  geom_point(aes(y = weight_range, x = month), alpha = 0.8, size = 3) +
+  xlab(&amp;quot;Date&amp;quot;) +
+  ylab(&amp;quot;Weight Range (grams)&amp;quot;) +
+  ggtitle(&amp;quot;Female Snowshoe Hare Weight Range\n(August 2004 - August 2012)&amp;quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5)) 
+
+#bunnies_plot_range&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3(G)&lt;/strong&gt; Finalized Kable table.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bunnies_table &amp;lt;- bunnies_female %&amp;gt;% 
+  select(&amp;quot;month&amp;quot;, &amp;quot;max_weight&amp;quot;, &amp;quot;min_weight&amp;quot;, &amp;quot;weight_range&amp;quot;) #Creating dataframe with only columns needed in table. 
+
+colnames(bunnies_table) &amp;lt;- c(&amp;quot;Month&amp;quot;, &amp;quot;Maximum Weight&amp;quot;, &amp;quot;Minimum Weight&amp;quot;, &amp;quot;Weight Range&amp;quot;)
+
+kable(bunnies_table, caption = &amp;quot;Table 1. Seasonal Female Snowshoe Hare Weight Fluctuations. For all female Snowshoes trapped from August 2004 - August 2012, maximum and minimum weights (grams) were derived by month. The range between these values is also displayed here to indicate seasonal fluctuations in female Snowshoe size, the size ranges peaking in summer months.&amp;quot;) %&amp;gt;% 
+  kable_styling(bootstrap_options = &amp;quot;striped&amp;quot;,
+                &amp;quot;responsive&amp;quot;,
+                full_width = FALSE) &lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table table-striped&#34; style=&#34;width: auto !important; margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;caption&gt;
+&lt;span id=&#34;tab:unnamed-chunk-7&#34;&gt;Table 1: &lt;/span&gt;Table 1. Seasonal Female Snowshoe Hare Weight Fluctuations. For all female Snowshoes trapped from August 2004 - August 2012, maximum and minimum weights (grams) were derived by month. The range between these values is also displayed here to indicate seasonal fluctuations in female Snowshoe size, the size ranges peaking in summer months.
+&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+Month
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+Maximum Weight
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+Minimum Weight
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+Weight Range
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Feb
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1660
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1250
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+410
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Mar
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1820
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1040
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+780
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Apr
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1710
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1040
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+670
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+May
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1900
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+720
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1180
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Jun
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2220
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+240
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1980
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Jul
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2170
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+650
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1520
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Aug
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2000
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+380
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1620
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Sep
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2060
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+560
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1500
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Oct
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1650
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1180
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+470
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Nov
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1930
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1060
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+870
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Dec
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1700
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1160
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+540
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

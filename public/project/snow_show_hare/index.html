@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Lydia Bleifuss">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Statistical analysis of snow shoe hare seasonal size.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/project/snow_show_hare/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#CD5B45">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cutive+Mono%7CLora:400,700%7CRoboto:400,700&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="/project/snow_show_hare/">
+
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="Lydia Bleifuss">
+  <meta property="og:url" content="/project/snow_show_hare/">
+  <meta property="og:title" content="Snow Shoe Hare | Lydia Bleifuss">
+  <meta property="og:description" content="Statistical analysis of snow shoe hare seasonal size."><meta property="og:image" content="/project/snow_show_hare/featured.jpeg">
+  <meta property="twitter:image" content="/project/snow_show_hare/featured.jpeg"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2020-01-09T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2020-01-09T15:02:28-08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/project/snow_show_hare/"
+  },
+  "headline": "Snow Shoe Hare",
+  
+  "image": [
+    "/project/snow_show_hare/featured.jpeg"
+  ],
+  
+  "datePublished": "2020-01-09T00:00:00Z",
+  "dateModified": "2020-01-09T15:02:28-08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Lydia Bleifuss"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Lydia Bleifuss",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img//"
+    }
+  },
+  "description": "Statistical analysis of snow shoe hare seasonal size."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Snow Shoe Hare | Lydia Bleifuss</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Lydia Bleifuss</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Lydia Bleifuss</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#experience"><span>Experience</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#recent_work"><span>Recent Work</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#skills"><span>Skills</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#courses"><span>Key Coursework</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/files/cv.pdf"><span>Resume</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article article-project">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+<div class="article-container pt-3">
+  <h1>Snow Shoe Hare</h1>
+
+  
+
+  
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Jan 9, 2020
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 615px; max-height: 408px;">
+  <div style="position: relative">
+    <img src="/project/snow_show_hare/featured.jpeg" alt="" class="featured-image">
+    
+  </div>
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p><strong>Snowshoe Hare, or Lepus americanus, in Alaska.</strong> Photo: Jean Beaufort</p>
+<div id="introductory-summary" class="section level5">
+<h5>1] Introductory Summary</h5>
+<p>Snowshoe Hares, especially charismatic and large hind-footed rabbits, thrive in northern boreal forests that encompass Alaskan, Canadian and Russian northern latitudes. Snowshoe Hares are a ‘keystone’ prey species, which means that other flora and fauna species will react, often dramatically, to changes in Snowshoe populations. Capture and release studies of Snowshoes have indicated that these rabbits have an 8-11 year population fluctuation cycle (Kielland et. al 2017). This analysis aims to add to that body of work, and uses an 8 year time span of Snowshoe trapping records to look specifically at seasonal changes in rabbit weights.</p>
+<p>Data Citation: Kielland K., F. S. Chapin, R. W. Ruess. 2017. Snowshoe hare physical data in Bonanza Creek Experimental Forest: 1999-Present. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/03dce4856d79b91557d8e6ce2cbcdc14" class="uri">https://doi.org/10.6073/pasta/03dce4856d79b91557d8e6ce2cbcdc14</a>.</p>
+</div>
+<div id="photo" class="section level5">
+<h5>2] Photo</h5>
+<div class="figure">
+<img src="Toklat_Alaska.jpg" alt="East Fork of Toklat River which drains Tanana Valley, habitat to Snowshoe Hares. Photo: Paxson Woelber" />
+<p class="caption"><strong>East Fork of Toklat River which drains Tanana Valley, habitat to Snowshoe Hares.</strong> Photo: Paxson Woelber</p>
+</div>
+</div>
+<div id="code" class="section level5">
+<h5>3] Code</h5>
+<p><strong>3(A).</strong> Read in data (Snow Show Hare information) and clean.</p>
+<pre class="r"><code>bunnies &lt;- read_csv(&quot;showshoe_Iter.csv&quot;) %&gt;% 
+  clean_names() #Make column headings lower case and with no spaces.
+
+bunnies$Date &lt;- as.Date(bunnies$date, &quot;%m/%d/%Y&quot;) #Want to make sure date data is in usable format.
+
+bunnies &lt;- bunnies %&gt;% 
+  mutate(month = month(Date)) #Adding a month only column for analysis later. 
+
+bunnies &lt;- bunnies %&gt;% 
+  mutate(year = year(Date)) #Adding a year only column for analysis later. 
+
+#There are a lot of NAs in this dataset, and before more cleaning and deciding on variables to graph, I want to explore the data. </code></pre>
+<p><strong>3(B).</strong> Explore data and missingness.</p>
+<pre class="r"><code>bun_miss_var &lt;- gg_miss_var(bunnies)#Time and notes appear to be mostly missing, nearly half of the dataset for age and hind foot is missing. Many NAs for right ear tag, weight and sex as well. 
+
+skim_bun &lt;- skim(bunnies) #Based on my understanding of missingness in the variabbles here, and having reviewed the metadata (know what columns mean), going to explore: 1. &#39;grid&#39; and &#39;trap&#39; to see how dispersered the traps are in the three grids through time, and if relatively well dispersed between the three grids, 2. &#39;weight&#39; and &#39;grids&#39; to see if females and males are hanging out in different areas or mixed (PLAN).
+
+bunnies_clean &lt;- bunnies %&gt;% 
+  select(sex, grid, Date, weight, trap, study, month, year) %&gt;% 
+  drop_na() %&gt;% #Needed to wrangle columns I wanted and then format sex column to normalize the indication of male and female and get rid of NAs
+    mutate(grid = str_to_lower(grid)) %&gt;%  #Wanted to make all lowercase so &#39;Bonbs&#39; was changed to &#39;bonds&#39; to match and so unique strings were represented correctly (&#39;bonrip&#39; &#39;bonbs&#39; and &#39;bonmat&#39;). 
+  mutate(sex = str_to_lower(sex)) %&gt;%  #there are male and female values with a &#39;?&#39; which I am not going to include because the sex is uncertain
+  filter(sex == &quot;m&quot; | sex == &quot;f&quot;)
+
+skim_bun_clean &lt;-skim(bunnies_clean) #Explore finalized/clean dataset. </code></pre>
+<p><strong>3(C).</strong> Explore above plan in graphs.</p>
+<pre class="r"><code>bunnies_plot_test &lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = trap, x = Date, color = grid), alpha = 0.5, size = 1)
+#bunnies_plot_test 
+
+#***This plot indicates that Bonmat grid was used in the early 2000s, and Bonbs was used in the later years. Going to not include all in final plot because they are still helpful in looking at weight dispursement, but now going to color by sex. 
+
+bunnies_plot_sex &lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = sex, color = sex), alpha = 0.5, size = 1)
+#bunnies_plot_sex
+
+#***It appears that females can grow to be larger than males.
+bunnies_f &lt;- nrow(subset(bunnies_clean,sex == &quot;f&quot;)) #1463 females
+bunnies_m &lt;- nrow(subset(bunnies_clean,sex == &quot;m&quot;)) #1063 males 
+
+bunnies_plot_study &lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = Date, color = study), alpha = 0.5, size = 1) +
+  facet_wrap(~sex) 
+#bunnies_plot_study
+
+#***Most studies have been done for populaiton, with a greater variety of studies done recently. 
+
+
+##Final plan: due to the increase amount of population studies happending from 2004 to 2012, will use this date range when creating final graph. Also great because 8 years should capture most of a populaiton fluctuation. </code></pre>
+<p><strong>3(D).</strong> Create finalized graph.</p>
+<pre class="r"><code>bunnies_plot &lt;- ggplot(data = bunnies_clean) +
+  geom_point(aes(y = weight, x = Date, color = sex), alpha = 0.5, size = 1.2) +
+  xlab(&quot;\nDate&quot;) +
+  ylab(&quot;Weight (grams)&quot;) +
+  labs(title = &quot;Snowshoe Hare Weight and Sex&quot;, subtitle = &quot;August 2004 - August 2012&quot;, caption = &quot;Figure 1. Snowshoe Hare Weight and Sex (August 2004 - August 2012).\n Seasonal weight fluctuations of both male and female Snowshoes across 8 years, or most of a population cycle.&quot;) +
+  theme(plot.title = element_text(size=10)) +
+  guides(color=guide_legend(&quot;Snowshoe Hare Sex&quot;)) +
+  scale_x_date(limits = as.Date(c(&quot;2004-09-01&quot;,&quot;2012-09-01&quot;))) +
+  scale_y_continuous(limits = c(0,2500))+
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) +
+  theme(legend.title = element_text(size=8), 
+        legend.position = &quot;bottom&quot;, 
+        legend.background = element_rect(fill=&quot;white&quot;,
+                                  size=0.5, linetype=&quot;solid&quot;, 
+                                  colour =&quot;black&quot;)) +
+  scale_color_manual(labels = c(&quot;Female&quot;, &quot;Male&quot;), values = c(&quot;yellow3&quot;,&quot;tomato2&quot;))
+
+bunnies_plot</code></pre>
+<p><img src="/project/snow_shoe_hare/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><strong>3(E)</strong> Data and stats formatting for Kable table.</p>
+<pre class="r"><code>#Summarize by month, max and min female and male weights 6 years total 
+
+bunnies_female &lt;- bunnies_clean %&gt;% 
+  filter(sex == &quot;f&quot;) %&gt;% 
+  select(Date, weight, sex, month, year) %&gt;% 
+  filter(Date &gt; &quot;2004-09-01&quot;, Date &lt; &quot;2012-09-01&quot;) %&gt;% 
+  group_by(month) %&gt;% 
+  dplyr::summarize(max_weight = max(weight), min_weight = min(weight)) %&gt;% 
+  mutate(weight_range = (max_weight - min_weight)) #Finding the range, more helpful than min and max in this case. 
+
+bunnies_female$month &lt;- month(bunnies_female$month, label = TRUE) #Converting month number to name.</code></pre>
+<p><strong>3(F)</strong> One last exploratory graph.</p>
+<pre class="r"><code>#Wanted to vizualize weight range table specifically. 
+
+bunnies_plot_range &lt;- ggplot(data = bunnies_female) +
+  geom_point(aes(y = weight_range, x = month), alpha = 0.8, size = 3) +
+  xlab(&quot;Date&quot;) +
+  ylab(&quot;Weight Range (grams)&quot;) +
+  ggtitle(&quot;Female Snowshoe Hare Weight Range\n(August 2004 - August 2012)&quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5)) 
+
+#bunnies_plot_range</code></pre>
+<p><strong>3(G)</strong> Finalized Kable table.</p>
+<pre class="r"><code>bunnies_table &lt;- bunnies_female %&gt;% 
+  select(&quot;month&quot;, &quot;max_weight&quot;, &quot;min_weight&quot;, &quot;weight_range&quot;) #Creating dataframe with only columns needed in table. 
+
+colnames(bunnies_table) &lt;- c(&quot;Month&quot;, &quot;Maximum Weight&quot;, &quot;Minimum Weight&quot;, &quot;Weight Range&quot;)
+
+kable(bunnies_table, caption = &quot;Table 1. Seasonal Female Snowshoe Hare Weight Fluctuations. For all female Snowshoes trapped from August 2004 - August 2012, maximum and minimum weights (grams) were derived by month. The range between these values is also displayed here to indicate seasonal fluctuations in female Snowshoe size, the size ranges peaking in summer months.&quot;) %&gt;% 
+  kable_styling(bootstrap_options = &quot;striped&quot;,
+                &quot;responsive&quot;,
+                full_width = FALSE) </code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-7">Table 1: </span>Table 1. Seasonal Female Snowshoe Hare Weight Fluctuations. For all female Snowshoes trapped from August 2004 - August 2012, maximum and minimum weights (grams) were derived by month. The range between these values is also displayed here to indicate seasonal fluctuations in female Snowshoe size, the size ranges peaking in summer months.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Month
+</th>
+<th style="text-align:right;">
+Maximum Weight
+</th>
+<th style="text-align:right;">
+Minimum Weight
+</th>
+<th style="text-align:right;">
+Weight Range
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Feb
+</td>
+<td style="text-align:right;">
+1660
+</td>
+<td style="text-align:right;">
+1250
+</td>
+<td style="text-align:right;">
+410
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mar
+</td>
+<td style="text-align:right;">
+1820
+</td>
+<td style="text-align:right;">
+1040
+</td>
+<td style="text-align:right;">
+780
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Apr
+</td>
+<td style="text-align:right;">
+1710
+</td>
+<td style="text-align:right;">
+1040
+</td>
+<td style="text-align:right;">
+670
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+May
+</td>
+<td style="text-align:right;">
+1900
+</td>
+<td style="text-align:right;">
+720
+</td>
+<td style="text-align:right;">
+1180
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jun
+</td>
+<td style="text-align:right;">
+2220
+</td>
+<td style="text-align:right;">
+240
+</td>
+<td style="text-align:right;">
+1980
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jul
+</td>
+<td style="text-align:right;">
+2170
+</td>
+<td style="text-align:right;">
+650
+</td>
+<td style="text-align:right;">
+1520
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aug
+</td>
+<td style="text-align:right;">
+2000
+</td>
+<td style="text-align:right;">
+380
+</td>
+<td style="text-align:right;">
+1620
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sep
+</td>
+<td style="text-align:right;">
+2060
+</td>
+<td style="text-align:right;">
+560
+</td>
+<td style="text-align:right;">
+1500
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oct
+</td>
+<td style="text-align:right;">
+1650
+</td>
+<td style="text-align:right;">
+1180
+</td>
+<td style="text-align:right;">
+470
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nov
+</td>
+<td style="text-align:right;">
+1930
+</td>
+<td style="text-align:right;">
+1060
+</td>
+<td style="text-align:right;">
+870
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dec
+</td>
+<td style="text-align:right;">
+1700
+</td>
+<td style="text-align:right;">
+1160
+</td>
+<td style="text-align:right;">
+540
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/analysis/">analysis</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/project/snow_show_hare/&amp;text=Snow%20Shoe%20Hare" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/project/snow_show_hare/&amp;t=Snow%20Shoe%20Hare" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Snow%20Shoe%20Hare&amp;body=/project/snow_show_hare/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/project/snow_show_hare/&amp;title=Snow%20Shoe%20Hare" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Snow%20Shoe%20Hare%20/project/snow_show_hare/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/project/snow_show_hare/&amp;title=Snow%20Shoe%20Hare" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hu4acd935f9e7563371846f93796182552_241734_250x250_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Lydia Bleifuss</a></h5>
+      <h6 class="card-subtitle">Graduate Student | Sustainable Water Markets Fellow</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://linkedin.com/in/lydiableifuss" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/lydiableifuss" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+    <div class="project-related-pages content-widget-hr">
+      
+      
+
+      
+      
+      
+
+      
+      
+      
+
+      
+      
+      
+    </div>
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.a0d331bcd05dbe8b31e244f796710f08.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
