@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>modeling | Lydia Bleifuss</title>
+    <link>/tags/modeling/</link>
+      <atom:link href="/tags/modeling/index.xml" rel="self" type="application/rss+xml" />
+    <description>modeling</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 09 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>modeling</title>
+      <link>/tags/modeling/</link>
+    </image>
+    
+    <item>
+      <title>Santa Cruz Creek Calibration</title>
+      <link>/project/arcswat_monthly/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>/project/arcswat_monthly/</guid>
+      <description>
+
+
+&lt;p&gt;Santa Cruz Creek USGS gauge flows into Cachuma&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Read in flow data 
+sc_usgs_flow &amp;lt;- read.csv(&amp;quot;sc_creek_clean.csv&amp;quot;)
+
+sc_usgs_flow$dis_cfs &amp;lt;- as.numeric(as.character(sc_usgs_flow$dis_cfs))
+#creat cloumn for daily inflow in cumecs (cfs to cubic meters per second (cumecs)) 
+sc_usgs_flow &amp;lt;- sc_usgs_flow %&amp;gt;% 
+  mutate(dis_cumecs = (dis_cfs*0.03)) 
+
+sc_usgs_flow$date &amp;lt;- as.Date(sc_usgs_flow$date, &amp;quot;%m/%d/%Y&amp;quot;)
+sc_usgs_flow$month_yr &amp;lt;- format(as.Date(sc_usgs_flow$date), &amp;quot;%Y-%m&amp;quot;)
+
+sc_usgs_flow_month &amp;lt;- sc_usgs_flow %&amp;gt;% 
+  group_by(month_yr) %&amp;gt;% 
+  mutate(usgs_month_flow = sum(dis_cumecs)) %&amp;gt;% 
+  mutate(usgs_month_flow_cfs = sum(dis_cfs)) #Now aggregating CFS by month for report &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Santa Cruz Creek Plot&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sc_usgs_month_plot &amp;lt;-ggplot(sc_usgs_flow_month, aes(x = date, y = usgs_month_flow)) +
+  #geom_point(color = &amp;quot;firebrick1&amp;quot;) +
+  geom_line(color = &amp;quot;firebrick1&amp;quot;) +
+  theme_classic() +
+  ggtitle(&amp;quot;Monthly Flow Santa Cruz Creek at USGS Santa Cruz Creek (1980 - 2018)&amp;quot;) +
+  xlab(&amp;quot;Date&amp;quot;) +
+  ylab(&amp;quot;Total Monthly Inflow (cumecs)&amp;quot;) +
+  theme(plot.title = element_text(size=12))
+
+sc_usgs_month_plot&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/arcswat_monthly/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;ArcSWAT Calibrations&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#### 4 STATION FLOW CACHUMA CN 30, CH K2 100, AND SOL AWC +0.20 AND ESCO 50
+sy_sub4_swat_cach_cn30_k100_awc2 &amp;lt;- read_xlsx(&amp;quot;daily_cachuma_final_calibration_rch.xlsx&amp;quot;) %&amp;gt;% 
+  clean_names() %&amp;gt;% 
+  filter(sub == 4) %&amp;gt;%
+  select(year, mon, flow_ou_tcms) %&amp;gt;% 
+  add_column(date = NA) %&amp;gt;% 
+  mutate(date = seq(from = as.Date(&amp;quot;1983-01-01&amp;quot;), to = as.Date(&amp;quot;2018-12-31&amp;quot;), by = &amp;#39;day&amp;#39;)) %&amp;gt;% # Add date column
+  add_column(month_yr = NA)
+
+sy_sub4_swat_cach_cn30_k100_awc2$month_yr &amp;lt;- format(as.Date(sy_sub4_swat_cach_cn30_k100_awc2$date), &amp;quot;%Y-%m&amp;quot;)
+
+sy_sub4_swat_cach_cn30_k100_awc2 &amp;lt;- sy_sub4_swat_cach_cn30_k100_awc2 %&amp;gt;% 
+  group_by(month_yr) %&amp;gt;% 
+  mutate(month_flow = sum(flow_ou_tcms)) %&amp;gt;% 
+  mutate(month_flow_cfs = sum(flow_ou_tcms*35.3))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;ArcSWAT calibration Plot&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sy_sub4_cach_calib_plot &amp;lt;-ggplot(sy_sub4_swat_cach_cn30_k100_awc2, aes(x = date, y = month_flow)) +
+ # geom_point(color = &amp;quot;turquoise4&amp;quot;) +
+  geom_line(color = &amp;quot;turquoise4&amp;quot;) +
+  theme_classic() +
+  ggtitle(&amp;quot;Monthly Flow Sub-Basin 4 ArcSWAT (1980 - 2018)&amp;quot;) +
+  xlab(&amp;quot;Date&amp;quot;) +
+  ylab(&amp;quot;Total Monthly Inflow (cumecs)&amp;quot;) +
+  theme(plot.title = element_text(size=12))
+
+sy_sub4_cach_calib_plot&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/arcswat_monthly/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Compare Santa Cruz USGS gauge with ArcSWAT calibration attempt&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Combining Sub4 SWAT CN 30 and Ch K2 100 and AWC +0.20 vs. USGS Santa Cruz
+sc_flow_month_comp_CN &amp;lt;-ggplot() +
+  #geom_point(aes(y = sy_sub4_swat_cach_cn30_k100_awc2$month_flow, x = sy_sub4_swat_cach_cn30_k100_awc2$date, color = &amp;quot;month_flow&amp;quot;), alpha = 0.4) +
+  geom_line(aes(group =1, y = sy_sub4_swat_cach_cn30_k100_awc2$month_flow_cfs, x = sy_sub4_swat_cach_cn30_k100_awc2$date, color = &amp;quot;month_flow_cfs&amp;quot;), alpha = 0.6, size = 1) +
+ # geom_point(aes(y = sc_usgs_flow_month$usgs_month_flow, x = sc_usgs_flow_month$date, color = &amp;quot;usgs_month_flow&amp;quot;), alpha = 0.4) +
+  geom_line(aes(group=1, y = sc_usgs_flow_month$usgs_month_flow_cfs, x = sc_usgs_flow_month$date, color = &amp;quot;usgs_month_flow_cfs&amp;quot;), alpha = 0.6, size = 1) +
+  theme_classic() +
+  ggtitle(&amp;quot;Observed USGS Flow Santa Cruz vs. \nArcSWAT Flow Sub-basin 4\n &amp;quot;) +
+  xlab(&amp;quot;Year&amp;quot;) +
+  ylab(bquote(&amp;#39;Total Monthly Streamfow (&amp;#39;~ft^3/s~&amp;#39;)&amp;#39;)) + 
+  theme(plot.title = element_text(size=12)) +
+theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.title = element_text(size=10), legend.position = &amp;quot;bottom&amp;quot;, legend.background = element_rect(fill=&amp;quot;white&amp;quot;,
+                                  size=0.5, linetype=&amp;quot;solid&amp;quot;, 
+                                  colour =&amp;quot;black&amp;quot;)) +
+  guides(color=guide_legend(&amp;quot;Streamflow\n1980-2018&amp;quot;)) +
+  #scale_x_date(limits = as.Date(c(&amp;quot;1998-01-01&amp;quot;,&amp;quot;2018-01-01&amp;quot;))) +
+  #scale_y_continuous(limits = c(0,250)) +
+  scale_color_manual(labels = c(&amp;quot;Simulated&amp;quot;, &amp;quot;Observed&amp;quot;), values = c(&amp;quot;turquoise4&amp;quot;, &amp;quot;firebrick1&amp;quot;)) #+
+  #theme_black()
+
+plot(sc_flow_month_comp_CN)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/arcswat_monthly/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
