@@ -1,5 +1,5 @@
 ---
-title: 'Steelhead Passage & Bonneville Dam'
+title: 'Steelhead Passage'
 author: ''
 date: '2020-01-09'
 slug: steelhead_migration_dam
@@ -48,11 +48,10 @@ library(feasts)
 library(forecast)
 ```
 
+**Steelhead Fish.** \n Photo: United States Fish and Wildlife Service, Pacific Region 
 
 #####1,2] Introductory Summary and Photos
 Steelhead are an important fish within the larger salmonid family that depend on passage up and down the Columbia River Basin to complete its life cycle. 
-
-![**Steelhead Fish.** \n Photo: United States Fish and Wildlife Service, Pacific Region](steelhead.jpg)
 
 The lower Columbia River has been blocked by large hydroelectric dams since the early 1900's. Importantly, the lower Columbia and its dynamic waterfalls were once used as historical fishing grounds by the local Native American Tribes, and were also spiritually important for these same groups. With the construction of large dams, both fish populations and cultural heritage were impacted.
 

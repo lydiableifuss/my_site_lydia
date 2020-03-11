@@ -35,7 +35,6 @@ library(tidyr)
 ```
 
 
-
 **Snowshoe Hare, or Lepus americanus, in Alaska.** \n Photo: Jean Beaufort
 
 #####1] Introductory Summary 
