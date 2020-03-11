@@ -70,6 +70,14 @@ height = "500px"
   overlay_img = "headers/5.jpeg"  # Image path relative to your `static/img/` folder.
   overlay_filter = 0  # Darken the image. Value in range 0-1.
   
+                                  [[item]]
+# title = "Western Water Management"
+  content = ""
+  align = "left"
+
+  #overlay_color = "#666"  # An HTML color value.
+  overlay_img = "headers/21.jpeg"  # Image path relative to your `static/img/` folder.
+  overlay_filter = 0  # Darken the image. Value in range 0-1.
     
     [[item]]
 # title = "Western Water Management"
@@ -206,16 +214,6 @@ height = "500px"
   overlay_img = "headers/20.jpeg"  # Image path relative to your `static/img/` folder.
   overlay_filter = 0  # Darken the image. Value in range 0-1.
   
-    
-                                [[item]]
-# title = "Western Water Management"
-  content = ""
-  align = "left"
-
-  #overlay_color = "#666"  # An HTML color value.
-  overlay_img = "headers/21.jpeg"  # Image path relative to your `static/img/` folder.
-  overlay_filter = 0  # Darken the image. Value in range 0-1.
-  
                                   [[item]]
 # title = "Western Water Management"
   content = ""
@@ -252,23 +250,23 @@ height = "500px"
   overlay_img = "headers/25.jpeg"  # Image path relative to your `static/img/` folder.
   overlay_filter = 0  # Darken the image. Value in range 0-1.
   
-                                          [[item]]
-# title = "Western Water Management"
-  content = ""
-  align = "left"
+                                          #[[item]]
+  #title = "Western Water Management"
+  #content = ""
+  #align = "left"
 
   #overlay_color = "#666"  # An HTML color value.
-  overlay_img = "headers/26.jpeg"  # Image path relative to your `static/img/` folder.
-  overlay_filter = 0  # Darken the image. Value in range 0-1.
+  #overlay_img = "headers/26.jpeg"  # Image path relative to your `static/img/` folder.
+  #overlay_filter = 0  # Darken the image. Value in range 0-1.
   
-                                            [[item]]
-# title = "Western Water Management"
-  content = ""
-  align = "left"
+ #[[item]]
+ #title = "Western Water Management"
+  #content = ""
+  #align = "left"
 
   #overlay_color = "#666"  # An HTML color value.
-  overlay_img = "headers/27.jpeg"  # Image path relative to your `static/img/` folder.
-  overlay_filter = 0  # Darken the image. Value in range 0-1.
+  #overlay_img = "headers/27.jpeg"  # Image path relative to your `static/img/` folder.
+  #overlay_filter = 0  # Darken the image. Value in range 0-1.
 +++
 
 

@@ -37,6 +37,6 @@ user_groups:
 - Visitors
 ---
 
-Lydia Bleifuss is a second year masters' student at The Bren School of Environmental Science & Management specilizing in integrated water resource management and environmental data science. Lydia's current work focusses on how surface and groundwater interactions can be more responsibly incorporated into river basin management considering localized climate change impacts. Lydia has most recently calibrated a hydrologic model to simiulate streamflow under various climate model projections in order to advise water demand stakeholders.
+Lydia Bleifuss is a second year masters' student at The Bren School of Environmental Science & Management specilizing in integrated water resources and environmental data science. Lydia's current work focusses on how surface and groundwater interactions can be more responsibly incorporated into river basin management, considering localized climate change impacts. Lydia has most recently calibrated a hydrologic model to simiulate streamflow under various climate model projections in order to advise reliant stakeholders.
 
 As a Sustainable Water Markets Fellow, Lydia interests also align with critical analyses of water transactions in the face of water scarcity, policies that govern transboundary basin management, and environmental justice implications of river development both in the Western United States and abroad.   
