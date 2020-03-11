@@ -1,0 +1,185 @@
+---
+title: "ESM 244 - Assignment 2"
+author: "Lydia Bleifuss"
+date: "2/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+###Task Three: 
+
+**Data Citations:**
+Land use/land cover data: http://geoportal.hawaii.gov/datasets/land-use-land-cover-lulc
+Watershed data: http://geoportal.hawaii.gov/datasets/watersheds
+All other hydrological data:http://geoportal.hawaii.gov/datasets
+
+```{r}
+## Attach packages:
+library(tidyverse)
+library(janitor)
+library(lubridate)
+library(here)
+library(paletteer)
+library(sf)
+library(tmap)
+library(mapview)
+library(tmaptools)
+library(rmapshaper)
+```
+
+**Read in original shapefiles from Assignment 2 - Part 3 and ensure all are in same crs (coordinate system and projection).** 
+```{r}
+Watersheds<- read_sf(dsn = here::here("HI Data", "hw watersheds"),
+                 layer = "Watersheds") %>% 
+              st_transform(crs = 4326) %>% 
+  select("wuname", "area_sqmi")
+
+land <- read_sf(dsn = here::here("HI Data","Land_Use_Land_Cover_LULC"),
+                layer = "Land_Use_Land_Cover_LULC") %>% 
+              st_transform(crs = 4326) %>% 
+  filter(landcover != 0)
+
+Water <- land %>% #Making a dataframe that only includes water oriented landcovers. 
+  filter(landcover == "Streams and Canals" | landcover == "Forested Wetland" | landcover == "Resevoirs" | landcover == "Nonforested Wetland" | landcover == "Lakes" | landcover == "Bays and Estuaries") %>% 
+  rename(Landcover = landcover) 
+
+#Exploring new water dataframe: 
+#mapview(Water) 
+#Interestingly, not much is shown on each island for the different landcovers under "Water."
+
+Industry <- land %>% #Making a dataframe that only includes man-made/industrial/pollution oriented landcovers. 
+  filter(landcover == "Residential" | landcover == "Other Urban or Built-up Land" | landcover == "Industrial" | landcover == "Industrial and Commercial Complexes" | landcover == "Commercial and Service" | landcover == "Transportation, Communications and Utilities" | landcover == "Other Agricultural Land" | landcover == "Strip Mines, Quarries, and Gravel Pits" | landcover == "Mixed Urban or Built-up Land" | landcover == "Confined Feeding Operations")
+
+#Exploring new industry datafram: 
+#mapview(Industry) 
+#Similar to "Water", not much is shown. While industral landcovers are where I would think (near city centers, etc.), there is clearly a lot missing. 
+```
+
+**Read in additional shapefiles to explore hydrology of Hawaii, to contrast with water oriented landcover dataframe, and ensure all are in same crs (coordinate system and projection).** 
+```{r}
+dlnr_aquifers<- read_sf(dsn = here::here("HI Data","DLNR_Aquifers_Poly"), #More resource-oriented in nature aquifer boundaries.
+                 layer = "DLNR_Aquifers_Poly") %>% 
+              st_transform(crs = 4326)
+
+doh_aquifers <- read_sf(dsn = here::here("HI Data","DOH_Aquifers_Polygons"), #More administrative in boundaries. Interesting that they have these two different datasets. 
+                 layer = "DOH_Aquifers_Polygons") %>% 
+              st_transform(crs = 4326)
+
+nhd_flowlines <- read_sf(dsn = here::here("HI Data","NHD_Flowlines"), #All HUC 8 flowlines.  
+                 layer = "NHD_Flowlines") %>% 
+              st_transform(crs = 4326)
+
+ms_simplify(nhd_flowlines) #Simplifying flowlines because working with this dataset is too difficult/time consuming as is. 
+#mapview(nhd_flowlines)
+ 
+Streams <- read_sf(dsn = here::here("HI Data","Streams"),
+                 layer = "Streams") %>% 
+              st_transform(crs = 4326) %>% 
+  mutate(Stream = str_to_lower(type)) #Type: Perennial (continuous flow) and Non-Perennial (seasonal flows).
+
+Rain <- read_sf(dsn = here::here("HI Data","StateIsohyetsSHP_mm"), #Rain contour lines for all islands, might be interesting to contrast against streams (perennial vs. non). 
+                 layer = "isohyet_mm_01") %>% 
+              st_transform(crs = 4326)
+```
+
+**Create clips of a couple dataframes for more convinient ggplots (geom_sf) later.** 
+```{r} 
+#Clips to explore in mapping below. 
+
+Flowlines <- st_intersection(Watersheds, nhd_flowlines) %>% #This was a very large file (long time to run), however it works more efficiently with simplification above. 
+  select("wuname", "gnis_name", "st_lengths")
+
+Waterways <- st_intersection(Watersheds, Water) %>% 
+  select("wuname", "Landcover")
+```
+
+#####Map 1] Kauai water oriented landcovers and watershed boundaries. 
+```{r}
+kauai_watercover <- ggplot(data = Watersheds) +
+  geom_sf(color = "grey3", 
+          size = 0.2) +
+    geom_sf(data = Water,
+          aes(fill = Landcover),
+          show.legend = TRUE,
+          color = "NA",
+          alpha = 0.8) +
+  ggtitle("Water Landcovers on Kauai, HI") +
+   coord_sf(xlim = c(-159.2, -159.9), ylim = c(21.8, 22.3), expand = FALSE) + #Cropping Kauai as example island to see what is going on.
+    theme_classic()
+
+kauai_watercover
+```
+
+#####Map 2] Kauai aquifer boundaries (DOH and DLNR) contrasted. 
+```{r}
+kauai_aquifers <- ggplot() +
+  geom_sf(data = doh_aquifers,
+          aes(colour = "DOH (Administratively Oriented)"),
+          alpha = 0.5,
+          show.legend = "line") + 
+  geom_sf(data = dlnr_aquifers, 
+          aes(colour = "DLNR (Hydrologically Oriented)"),
+          alpha = 0.5,
+          show.legend = "line") +
+   coord_sf(xlim = c(-159.2, -159.9), ylim = c(21.8, 22.3), expand = FALSE) + #Cropping Kauai as example island to see what is going on.
+  ggtitle("Aquifer Boundary Deliniations on Kauai, HI\n ") +
+  scale_colour_manual(values = c("DLNR (Hydrologically Oriented)" = "palegreen4", "DOH (Administratively Oriented)" = "tomato2")) +
+guides(color=guide_legend("Tyep of Aquifer Boundary")) +
+  theme_classic()
+
+kauai_aquifers
+```
+
+#####Map 3] Kauai streams by watershed.
+```{r}
+kauai_streams <- ggplot(data = Flowlines) +
+  geom_sf(aes(colour = wuname), 
+          alpha = 0.5,
+          show.legend = FALSE) +
+  ggtitle("Flowlines by Watershed on Kauai, HI")+
+  theme_classic() +
+  coord_sf(xlim = c(-159.2, -159.9), ylim = c(21.8, 22.3),expand = FALSE) #Cropping Kauai as example island to see what is going on.
+            
+kauai_streams
+```
+
+
+#####Map 4] Interactive map of all Hawaiian Islands comparing perennaial streams, rainfal contours and watershed boundaries. 
+```{r}
+#Included watersheds to determine if larger watershed have more perennial streams (only based on visual cues). This is not possible however because the data seems questionable. On many of the islands, very small watersheds are shown to have much more area than larger. The square mileage was computed with GIS, and perhaps there was an issue there. 
+
+tmap_mode("view") #Set so the map will be interactive. 
+
+all_islands_tmap <- tm_basemap("Esri.WorldImagery") + #Add a basemap explored previously in mapview.
+  #tm_shape(Watersheds) +
+#tm_polygons("area_sqmi", 
+           # style = "pretty",
+           # palette = "YlOrRd",
+           # id = "wuname",
+           # popup.var = TRUE,
+           # colorNA = NULL,
+         # title = "Watershed Area (sq. miles)", 
+         # lwd = 1, 
+         # alpha = 0.5) +
+tm_shape(Streams) +
+  tm_lines(col = "Stream",
+           title.col = "Stream Type",
+           style = "pretty",
+           palette = "Greens",
+           id = "Stream",
+           popup.var = FALSE) +
+tm_shape(Rain) +
+  tm_lines(col = "CONTOUR",
+           title.col="Rain Contour (mm)",
+           style = "pretty",
+           palette = "Blues",
+           id = "Contour",
+           popup.var = TRUE,
+           colorNA = NULL) +
+  tm_layout("Hawaiian Island Hyrdological Dynamics (WGS84)")
+
+all_islands_tmap
+```
