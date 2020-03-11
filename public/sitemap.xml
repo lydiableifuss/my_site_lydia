@@ -33,7 +33,17 @@
   </url>
   
   <url>
+    <loc>/tags/conservation/</loc>
+    <lastmod>2020-01-09T15:02:28-08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/project/</loc>
+    <lastmod>2020-01-09T15:02:28-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/project/arcswat_monthly/</loc>
     <lastmod>2020-01-09T15:02:28-08:00</lastmod>
   </url>
   
@@ -43,7 +53,22 @@
   </url>
   
   <url>
+    <loc>/project/steelhead_migration_dam/</loc>
+    <lastmod>2020-01-09T15:02:28-08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/</loc>
+    <lastmod>2020-01-09T15:02:28-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/project/gw_tule_dtw/</loc>
+    <lastmod>2020-01-09T15:02:28-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/water/</loc>
     <lastmod>2020-01-09T15:02:28-08:00</lastmod>
   </url>
   
@@ -125,26 +150,6 @@
   <url>
     <loc>/terms/</loc>
     <lastmod>2018-06-28T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/deep-learning/</loc>
-    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/demo/</loc>
-    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/project/external-project/</loc>
-    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/project/internal-project/</loc>
-    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>

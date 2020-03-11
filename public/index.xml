@@ -75,6 +75,141 @@
     </item>
     
     <item>
+      <title>Santa Cruz Creek Calibration</title>
+      <link>/project/arcswat_monthly/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>/project/arcswat_monthly/</guid>
+      <description>
+
+
+&lt;p&gt;Santa Cruz Creek USGS gauge flows into Cachuma&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Read in flow data 
+sc_usgs_flow &amp;lt;- read.csv(&amp;quot;sc_creek_clean.csv&amp;quot;)
+
+sc_usgs_flow$dis_cfs &amp;lt;- as.numeric(as.character(sc_usgs_flow$dis_cfs))
+#creat cloumn for daily inflow in cumecs (cfs to cubic meters per second (cumecs)) 
+sc_usgs_flow &amp;lt;- sc_usgs_flow %&amp;gt;% 
+  mutate(dis_cumecs = (dis_cfs*0.03)) 
+
+sc_usgs_flow$date &amp;lt;- as.Date(sc_usgs_flow$date, &amp;quot;%m/%d/%Y&amp;quot;)
+sc_usgs_flow$month_yr &amp;lt;- format(as.Date(sc_usgs_flow$date), &amp;quot;%Y-%m&amp;quot;)
+
+sc_usgs_flow_month &amp;lt;- sc_usgs_flow %&amp;gt;% 
+  group_by(month_yr) %&amp;gt;% 
+  mutate(usgs_month_flow = sum(dis_cumecs)) %&amp;gt;% 
+  mutate(usgs_month_flow_cfs = sum(dis_cfs)) #Now aggregating CFS by month for report &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Santa Cruz Creek Plot&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sc_usgs_month_plot &amp;lt;-ggplot(sc_usgs_flow_month, aes(x = date, y = usgs_month_flow)) +
+  geom_point(color = &amp;quot;dark blue&amp;quot;) +
+  geom_line(color = &amp;quot;dark blue&amp;quot;) +
+  theme_classic() +
+  ggtitle(&amp;quot;Monthly Flow Santa Cruz Creek at USGS Santa Cruz Creek (1980 - 2018)&amp;quot;) +
+  xlab(&amp;quot;Date&amp;quot;) +
+  ylab(&amp;quot;Total Monthly Inflow (cumecs)&amp;quot;) +
+  theme(plot.title = element_text(size=12))
+
+sc_usgs_month_plot&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/arcswat_monthly/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;ArcSWAT Calibrations&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#### 4 STATION FLOW CACHUMA CN 30, CH K2 100, AND SOL AWC +0.20 AND ESCO 50
+sy_sub4_swat_cach_cn30_k100_awc2 &amp;lt;- read_xlsx(&amp;quot;daily_cachuma_final_calibration_rch.xlsx&amp;quot;) %&amp;gt;% 
+  clean_names() %&amp;gt;% 
+  filter(sub == 4) %&amp;gt;%
+  select(year, mon, flow_ou_tcms) %&amp;gt;% 
+  add_column(date = NA) %&amp;gt;% 
+  mutate(date = seq(from = as.Date(&amp;quot;1983-01-01&amp;quot;), to = as.Date(&amp;quot;2018-12-31&amp;quot;), by = &amp;#39;day&amp;#39;)) %&amp;gt;% # Add date column
+  add_column(month_yr = NA)
+
+sy_sub4_swat_cach_cn30_k100_awc2$month_yr &amp;lt;- format(as.Date(sy_sub4_swat_cach_cn30_k100_awc2$date), &amp;quot;%Y-%m&amp;quot;)
+
+sy_sub4_swat_cach_cn30_k100_awc2 &amp;lt;- sy_sub4_swat_cach_cn30_k100_awc2 %&amp;gt;% 
+  group_by(month_yr) %&amp;gt;% 
+  mutate(month_flow = sum(flow_ou_tcms)) %&amp;gt;% 
+  mutate(month_flow_cfs = sum(flow_ou_tcms*35.3))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;ArcSWAT calibration Plot&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sy_sub4_cach_calib_plot &amp;lt;-ggplot(sy_sub4_swat_cach_cn30_k100_awc2, aes(x = date, y = month_flow)) +
+  geom_point(color = &amp;quot;dark blue&amp;quot;) +
+  geom_line(color = &amp;quot;dark blue&amp;quot;) +
+  theme_classic() +
+  ggtitle(&amp;quot;Monthly Flow Sub-Basin 4 ArcSWAT (1980 - 2018)&amp;quot;) +
+  xlab(&amp;quot;Date&amp;quot;) +
+  ylab(&amp;quot;Total Monthly Inflow (cumecs)&amp;quot;) +
+  theme(plot.title = element_text(size=12))
+
+sy_sub4_cach_calib_plot&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/arcswat_monthly/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;theme_black = function(base_size = 12, base_family = &amp;quot;&amp;quot;) {
+ 
+  theme_grey(base_size = base_size, base_family = base_family) %+replace%
+ 
+    theme(
+      # Specify axis options
+      axis.line = element_blank(),  
+      axis.text.x = element_text(size = base_size*0.8, color = &amp;quot;white&amp;quot;, lineheight = 0),  
+      axis.text.y = element_text(size = base_size*0.8, color = &amp;quot;white&amp;quot;, lineheight = 0),  
+      #axis.ticks = element_line(color = &amp;quot;white&amp;quot;, size  =  0.2),  
+      axis.title.x = element_text(size = base_size, color = &amp;quot;white&amp;quot;, margin = margin(0, 10, 0, 0)),  
+      axis.title.y = element_text(size = base_size, color = &amp;quot;white&amp;quot;, angle = 90, margin = margin(0, 10, 0, 0)),  
+      axis.ticks.length = unit(0.3, &amp;quot;lines&amp;quot;),   
+      # Specify legend options
+      legend.background = element_rect(color = NA, fill = &amp;quot;black&amp;quot;),  
+      legend.key = element_rect(color = &amp;quot;white&amp;quot;,  fill = &amp;quot;black&amp;quot;),  
+      legend.key.size = unit(1.2, &amp;quot;lines&amp;quot;),  
+      legend.key.height = NULL,  
+      legend.key.width = NULL,      
+      legend.text = element_text(size = base_size*0.8, color = &amp;quot;white&amp;quot;),  
+      legend.title = element_text(size = base_size*0.8, face = &amp;quot;bold&amp;quot;, hjust = 0, color = &amp;quot;white&amp;quot;),  
+      legend.position = &amp;quot;bottom&amp;quot;,  
+      legend.text.align = NULL,  
+      legend.title.align = NULL,  
+      legend.direction = &amp;quot;horizontal&amp;quot;,  
+      legend.box = NULL, 
+      # Specify panel options
+      panel.background = element_rect(fill = &amp;quot;black&amp;quot;, color  =  NA),  
+      panel.border = element_rect(fill = NA, color = &amp;quot;white&amp;quot;),  
+      panel.grid.major = element_line(color = &amp;quot;black&amp;quot;),  
+      panel.grid.minor = element_line(color = &amp;quot;black&amp;quot;),  
+      panel.margin = unit(0, &amp;quot;lines&amp;quot;),   
+      # Specify facetting options
+      strip.background = element_rect(fill = &amp;quot;grey30&amp;quot;, color = &amp;quot;grey10&amp;quot;),  
+      strip.text.x = element_text(size = base_size*0.8, color = &amp;quot;white&amp;quot;),  
+      strip.text.y = element_text(size = base_size*0.8, color = &amp;quot;white&amp;quot;,angle = -90),  
+      # Specify plot options
+      plot.background = element_rect(color = &amp;quot;black&amp;quot;, fill = &amp;quot;black&amp;quot;),  
+      plot.title = element_text(size = base_size*1.2, color = &amp;quot;white&amp;quot;),  
+      plot.margin = unit(rep(1, 4), &amp;quot;lines&amp;quot;)
+ 
+    )
+ 
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Compare Santa Cruz USGS gauge with ArcSWAT calibration attempt&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Combining Sub4 SWAT CN 30 and Ch K2 100 and AWC +0.20 vs. USGS Santa Cruz
+sc_flow_month_comp_CN &amp;lt;-ggplot() +
+  #geom_point(aes(y = sy_sub4_swat_cach_cn30_k100_awc2$month_flow, x = sy_sub4_swat_cach_cn30_k100_awc2$date, color = &amp;quot;month_flow&amp;quot;), alpha = 0.4) +
+  geom_line(aes(group =1, y = sy_sub4_swat_cach_cn30_k100_awc2$month_flow_cfs, x = sy_sub4_swat_cach_cn30_k100_awc2$date, color = &amp;quot;month_flow_cfs&amp;quot;), alpha = 0.6, size = 1) +
+ # geom_point(aes(y = sc_usgs_flow_month$usgs_month_flow, x = sc_usgs_flow_month$date, color = &amp;quot;usgs_month_flow&amp;quot;), alpha = 0.4) +
+  geom_line(aes(group=1, y = sc_usgs_flow_month$usgs_month_flow_cfs, x = sc_usgs_flow_month$date, color = &amp;quot;usgs_month_flow_cfs&amp;quot;), alpha = 0.6, size = 1) +
+  theme_classic() +
+  ggtitle(&amp;quot;Observed USGS Flow Santa Cruz vs. \nArcSWAT Flow Sub-basin 4\n &amp;quot;) +
+  xlab(&amp;quot;Year&amp;quot;) +
+  ylab(bquote(&amp;#39;Total Monthly Streamfow (&amp;#39;~ft^3/s~&amp;#39;)&amp;#39;)) + 
+  theme(plot.title = element_text(size=12)) +
+theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.title = element_text(size=10), legend.position = &amp;quot;bottom&amp;quot;, legend.background = element_rect(fill=&amp;quot;white&amp;quot;,
+                                  size=0.5, linetype=&amp;quot;solid&amp;quot;, 
+                                  colour =&amp;quot;black&amp;quot;)) +
+  guides(color=guide_legend(&amp;quot;Streamflow\n1980-2018&amp;quot;)) +
+  #scale_x_date(limits = as.Date(c(&amp;quot;1998-01-01&amp;quot;,&amp;quot;2018-01-01&amp;quot;))) +
+  #scale_y_continuous(limits = c(0,250)) +
+  scale_color_manual(labels = c(&amp;quot;Simulated&amp;quot;, &amp;quot;Observed&amp;quot;), values = c(&amp;quot;turquoise4&amp;quot;, &amp;quot;firebrick1&amp;quot;)) #+
+  #theme_black()
+
+plot(sc_flow_month_comp_CN)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/arcswat_monthly/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Snow Shoe Hare</title>
       <link>/project/snow_show_hare/</link>
       <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
@@ -382,6 +517,383 @@ Dec
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Steelhead Passage</title>
+      <link>/project/steelhead_migration_dam/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>/project/steelhead_migration_dam/</guid>
+      <description>
+
+
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Helpful Packages
+library(tidyverse)
+library(janitor)
+library(here)
+library(skimr)
+library(naniar)
+library(VIM)
+library(ggfortify)
+library(lubridate)
+library(tsibble)
+library(ggthemes)
+library(ggplot2)
+library(gridExtra)
+library(paletteer)
+
+#tsibble
+library(tsibble)
+library(fable)
+library(fabletools)
+library(feasts)
+library(forecast)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Steelhead Fish.&lt;/strong&gt; Photo: United States Fish and Wildlife Service, Pacific Region&lt;/p&gt;
+&lt;div id=&#34;introductory-summary-and-photos&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;1,2] Introductory Summary and Photos&lt;/h5&gt;
+&lt;p&gt;Steelhead are an important fish within the larger salmonid family that depend on passage up and down the Columbia River Basin to complete its life cycle.&lt;/p&gt;
+&lt;p&gt;The lower Columbia River has been blocked by large hydroelectric dams since the early 1900’s. Importantly, the lower Columbia and its dynamic waterfalls were once used as historical fishing grounds by the local Native American Tribes, and were also spiritually important for these same groups. With the construction of large dams, both fish populations and cultural heritage were impacted.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;Celilo%20Falls.jpg&#34; alt=&#34;Celilo Falls - flooded by Dalles Dam, upstream of Bonneville Dam, in 1957. Photo: Gerald W. Williams Collection&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;strong&gt;Celilo Falls - flooded by Dalles Dam, upstream of Bonneville Dam, in 1957.&lt;/strong&gt; Photo: Gerald W. Williams Collection&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Bonneville Dam was constructed in 1934 and is the first river-wide barrier moving upstream from the Pacific. The amount of salmonid species that surpass the dam successfully, in both directions, is important to understand the health of the species over time, especially as new fish ladder and water quality regulations develop.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;bonneville-dam-and-people-fishing.jpg&#34; alt=&#34;Bonneville Dam, Columbia River Basin, OR, built in 1934. Photo: Forest Service&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;strong&gt;Bonneville Dam, Columbia River Basin, OR, built in 1934.&lt;/strong&gt; Photo: Forest Service&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;This analysis focuses on Steelhead passage time series data from the Columbia River DART program, although several salmonid species are tracked within this database. In order to understand the health of Steelhead populations, it is important to look at time series data in a variety of ways. The seasonality of Steelhead passage is especially important to consider, as warmer river waters may push passage earlier into the season.&lt;/p&gt;
+&lt;p&gt;Data from: Columbia Basin Research Available here: Adult fish passage (&lt;a href=&#34;http://www.cbr.washington.edu/dart/query/adult_graph_text&#34; class=&#34;uri&#34;&gt;http://www.cbr.washington.edu/dart/query/adult_graph_text&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Citation: Columbia River DART, Columbia Basin Research, University of Washington. (2019). Adult Passage Graphics &amp;amp; Text. Available from &lt;a href=&#34;http://www.cbr.washington.edu/dart/query/adult_graph_text&#34; class=&#34;uri&#34;&gt;http://www.cbr.washington.edu/dart/query/adult_graph_text&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;code&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;3] Code&lt;/h5&gt;
+&lt;p&gt;&lt;strong&gt;3(A).&lt;/strong&gt; Read in data and clean. Ensure time series data is in tsibble compatable format.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;salmon_data_all &amp;lt;- read_csv(&amp;quot;cbr_fish_passage_bonneville_allyrs_steelhead.csv&amp;quot;) %&amp;gt;% 
+  clean_names() %&amp;gt;% 
+  mutate(location = str_to_lower(location)) %&amp;gt;% #Making location all lower case, column names already lowercase but used clean_names() to get mm-dd into nicer format.
+  mutate(date = paste(year, mm_dd, sep = &amp;quot;-&amp;quot;)) %&amp;gt;% #Get all date into into one column. 
+  mutate(date_new = lubridate::parse_date_time(date, &amp;quot;ydm&amp;quot;)) %&amp;gt;% #Took out 29th day of February (61 total, Lubridate make an assumption that 29th day in Feb doesn&amp;#39;t make sense because there are 28 days).
+  mutate(date_month = yearmonth(date_new)) %&amp;gt;% #This is the last and needed step to make sure that tsibble can use the time seris data (coerce to tsibble `yearmonth` format). 
+  mutate(month = month(date_new)) #Have month column alone for use later. &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3(B).&lt;/strong&gt; Explore data and missingness.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#salmon_skim &amp;lt;- skim(salmon_data)
+
+salmon_data &amp;lt;- salmon_data_all %&amp;gt;% 
+  drop_na(date_new, value) %&amp;gt;% #Afer missingess exploration, feel comfortable with these exclusions. 
+  select(date_new, date_month, value, year, month) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3(C).&lt;/strong&gt; Daily time series plot of the original observations (daily data).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;salmon_daily &amp;lt;- ggplot(salmon_data, aes(x = date_new, y = value/1000)) +
+  geom_line(color = &amp;quot;olivedrab4&amp;quot;) +
+  geom_col(width = 0.5, show.legend = FALSE, alpha = 0.5) +
+  theme_classic() +
+   ggtitle(&amp;quot;Daily Steelhead Salmon Passage (1939 - 2019)\n&amp;quot;) +
+  xlab(&amp;quot;\nDay&amp;quot;) +
+  ylab(&amp;quot;Steelhead Passage \n(Thousands/Day)\n&amp;quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(expand = c(0,0)) +
+    labs(caption = &amp;quot;\nFigure 3. Daily steelhead salmon passage across the Bonneville Dam (Oregon) from years 1939 to 2019.&amp;quot;) # Moved caption down here because it was altering the rest of the plot. 
+
+salmon_daily&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/steelhead_migration_dam/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3(D).&lt;/strong&gt; Exploring different time series plots.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Aggregate by month so there are no gaps tsibble has problems with. Also more helpful to look at monthly totals, daily is too much to get a sense from. 
+salmon_month &amp;lt;- salmon_data %&amp;gt;% 
+  group_by(date_month) %&amp;gt;% 
+  mutate(month_fish = sum(value)) %&amp;gt;% 
+  distinct(date_month, .keep_all = TRUE)
+  
+# Coerce to a tsibble:
+salmon_new &amp;lt;- as_tsibble(salmon_month, index = date_month) %&amp;gt;% 
+  tsibble::fill_gaps()
+
+salmon_auto &amp;lt;- salmon_new %&amp;gt;% 
+  feasts::autoplot(month_fish) #Helpful to get basic understanding of what monthly totals look like. 
+salmon_subseries &amp;lt;- salmon_new %&amp;gt;% 
+  feasts::gg_subseries(month_fish) #Great graphical exploration, provides mean for each month. Really there are three months of interest, July, August and September. 
+#salmon_new %&amp;gt;% feasts::gg_season(month_fish) #This still does not work on this computer despite download. &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3(E).&lt;/strong&gt; Monthly time series plot of the original observations (monthly totals).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Seasonal (MONTHLY) plot: 
+salmon_season &amp;lt;- ggplot(data = salmon_month, 
+       aes(x = month, y = month_fish/1000, group = year)) +
+  geom_line(aes(color = year), alpha = 0.5, size = 0.8) +
+  theme_classic()+
+   ggtitle(&amp;quot;Seasonal Steelhead Salmon Passage (1939 - 2019)&amp;quot;) +
+  xlab(&amp;quot;\nMonth - Water Year&amp;quot;) +
+  ylab(&amp;quot;Steelhead Passage \n(Thousands/Month)\n&amp;quot;) +
+  guides(color=guide_legend(&amp;quot;Year (1939 - 2019)&amp;quot;)) +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) + scale_x_discrete(limits=c(&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;,&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;)) +
+  scale_y_continuous(expand = c(0,0)) +
+  theme(legend.title = element_text(size=8), legend.position = &amp;quot;bottom&amp;quot;, legend.background = element_rect(fill=&amp;quot;white&amp;quot;,
+                                  size=0.5, linetype=&amp;quot;solid&amp;quot;, 
+                                  colour =&amp;quot;black&amp;quot;)) +
+  scale_color_paletteer_c(&amp;quot;ggthemes::Classic Red-Green&amp;quot;) +
+    labs(caption = &amp;quot;\nFigure 2. Seasonal steelhead salmon passage across the Bonneville Dam (Oregon) from years \n1939 to 2019 by month. Steelhead passage has been higher in last decade.&amp;quot;) # Moved caption down here because it was altering the rest of the plot. 
+
+salmon_season&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/steelhead_migration_dam/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3(F).&lt;/strong&gt; Yearly time series plot of the original observations (yearly totals).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Annual plot: aggregate by year first. 
+salmon_year &amp;lt;- salmon_month %&amp;gt;% 
+  group_by(year) %&amp;gt;% 
+   mutate(year_fish = sum(month_fish)) %&amp;gt;% 
+  distinct(year, .keep_all = TRUE)
+
+
+salmon_annual &amp;lt;- ggplot(data = salmon_year, 
+       aes(x = year, y = year_fish/1000, fill = &amp;quot;darksalmon&amp;quot;)) +
+  geom_col(width = 0.5, show.legend = FALSE, alpha = 0.8) +
+  theme_classic() +
+   ggtitle(&amp;quot;Annual Steelhead Salmon Passage (1939 - 2019)\n&amp;quot;) +
+  xlab(&amp;quot;\nYear&amp;quot;) +
+  ylab(&amp;quot;Steelhead Passage \n(Thousands/Year)\n&amp;quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  scale_x_continuous(expand = c(0,0), limits = c(1939,2020)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(expand = c(0,0)) +
+    labs(caption = &amp;quot;\nFigure 3. Total annual steelhead salmon passage across the Bonneville Dam (Oregon) from years \n1939 to 2019 by year. Steelhead passage has been higher in last decade.&amp;quot;) # Moved caption down here because it was altering the rest of the plot. 
+
+salmon_annual&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/steelhead_migration_dam/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Tule Groundwater Basin</title>
+      <link>/project/gw_tule_dtw/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>/project/gw_tule_dtw/</guid>
+      <description>
+
+
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#GW measurements and stations, reading in as seperate sheets
+
+gw_data_measure &amp;lt;- read_xlsx( &amp;quot;CaliforniaWellWaterLevelData_measurements.xlsx&amp;quot;) %&amp;gt;% 
+  clean_names() %&amp;gt;% 
+  filter(basin == &amp;quot;TULE&amp;quot;) %&amp;gt;% 
+  mutate(basin = str_to_lower(basin)) %&amp;gt;% 
+  drop_na()
+
+
+gw_data_stations &amp;lt;- read_xlsx(&amp;quot;CaliforniaWellWaterLevelData_station.xlsx&amp;quot;) %&amp;gt;% 
+  clean_names() %&amp;gt;% 
+  filter(basin == &amp;quot;TULE&amp;quot;) %&amp;gt;% 
+  mutate(basin = str_to_lower(basin)) %&amp;gt;% 
+  drop_na()
+
+#Joined by stn_id
+tule_join &amp;lt;- full_join(gw_data_measure, gw_data_stations, by = &amp;quot;stn_id&amp;quot;) %&amp;gt;% 
+  select(&amp;quot;stn_id&amp;quot;, &amp;quot;well_depth_m.x&amp;quot;, &amp;quot;ground_surface_elevation_masl&amp;quot;, &amp;quot;decimal_year_of_measurement&amp;quot;, &amp;quot;depth_to_water_m&amp;quot;, &amp;quot;basin.x&amp;quot;, &amp;quot;min_date&amp;quot;, &amp;quot;max_date&amp;quot;, &amp;quot;min_date_after_1975&amp;quot;, &amp;quot;min_date_after_2006_9999&amp;quot;) 
+
+tule_join$stn_id &amp;lt;- as.character(as.numeric(tule_join$stn_id))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Problem 1 
+
+
+tule_one &amp;lt;- tule_join %&amp;gt;% 
+  filter(min_date_after_1975 &amp;lt; &amp;quot;1980&amp;quot;) %&amp;gt;% 
+  filter(max_date &amp;gt; &amp;quot;2015&amp;quot;) %&amp;gt;% 
+  filter(stn_id == &amp;quot;18620&amp;quot; | stn_id == &amp;quot;19166&amp;quot; | stn_id == &amp;quot;20214&amp;quot; | stn_id == &amp;quot;19536&amp;quot; | stn_id == &amp;quot;22235&amp;quot; | stn_id == &amp;quot;34727&amp;quot;)
+
+####18620
+#W1: add a column that calculated median between 1975 - 1980
+tule_80_w1 &amp;lt;- tule_one %&amp;gt;% 
+  filter(stn_id == &amp;quot;18620&amp;quot;) %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;lt; &amp;quot;1980&amp;quot;) 
+  
+median_80_w1 &amp;lt;- median(tule_80_w1$depth_to_water_m)
+median_80_w1 #86.25&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 86.2584&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#W1: add a column that calculated median between 2015 - 2020
+tule_15_w1 &amp;lt;- tule_one %&amp;gt;% 
+  filter(stn_id == &amp;quot;18620&amp;quot;) %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;gt; &amp;quot;2015&amp;quot;) 
+  
+median_15_w1 &amp;lt;- median(tule_15_w1$depth_to_water_m)
+median_15_w1 #96.31&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 96.3168&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;####19166
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w2 &amp;lt;- tule_one %&amp;gt;% 
+  filter(stn_id == &amp;quot;19166&amp;quot;) %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;lt; &amp;quot;1980&amp;quot;) 
+  
+median_80_w2 &amp;lt;- median(tule_80_w2$depth_to_water_m)
+median_80_w2 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 115.5192&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#W2: add a column that calculated median between 2015 - 2020
+tule_15_w2 &amp;lt;- tule_one %&amp;gt;% 
+  filter(stn_id == &amp;quot;19166&amp;quot;) %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;gt; &amp;quot;2015&amp;quot;) 
+  
+median_15_w2 &amp;lt;- median(tule_15_w2$depth_to_water_m)
+median_15_w2 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 148.4376&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;####19536
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w3 &amp;lt;- tule_one %&amp;gt;% 
+  filter(stn_id == &amp;quot;19536&amp;quot;) %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;lt; &amp;quot;1980&amp;quot;) 
+  
+median_80_w3 &amp;lt;- median(tule_80_w3$depth_to_water_m)
+median_80_w3 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 19.812&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#W2: add a column that calculated median between 2015 - 2020
+tule_15_w3 &amp;lt;- tule_one %&amp;gt;% 
+  filter(stn_id == &amp;quot;19536&amp;quot;) %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;gt; &amp;quot;2015&amp;quot;) 
+  
+median_15_w3 &amp;lt;- median(tule_15_w3$depth_to_water_m)
+median_15_w3 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 22.41804&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;####20214
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w4 &amp;lt;- tule_one %&amp;gt;% 
+  filter(stn_id == &amp;quot;20214&amp;quot;) %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;lt; &amp;quot;1980&amp;quot;) 
+  
+median_80_w4 &amp;lt;- median(tule_80_w4$depth_to_water_m)
+median_80_w4&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 68.7324&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#W2: add a column that calculated median between 2015 - 2020
+tule_15_w4 &amp;lt;- tule_one %&amp;gt;% 
+  filter(stn_id == &amp;quot;20214&amp;quot;) %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;gt; &amp;quot;2015&amp;quot;) 
+  
+median_15_w4 &amp;lt;- median(tule_15_w4$depth_to_water_m)
+median_15_w4 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 90.2208&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;####22235
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w5 &amp;lt;- tule_one %&amp;gt;% 
+  filter(stn_id == &amp;quot;22235&amp;quot;) %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;lt; &amp;quot;1980&amp;quot;) 
+  
+median_80_w5 &amp;lt;- median(tule_80_w5$depth_to_water_m)
+median_80_w5&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 30.54096&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#W2: add a column that calculated median between 2015 - 2020
+tule_15_w5 &amp;lt;- tule_one %&amp;gt;% 
+  filter(stn_id == &amp;quot;22235&amp;quot;) %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;gt; &amp;quot;2015&amp;quot;) 
+  
+median_15_w5 &amp;lt;- median(tule_15_w5$depth_to_water_m)
+median_15_w5 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 60.68568&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Plot 5  wells (Problem 1) 
+
+tule_plot &amp;lt;- ggplot(data = tule_one, aes(x = decimal_year_of_measurement, y = depth_to_water_m, color = stn_id)) + 
+  geom_point(alpha = 0.6, size = 0.5) + 
+  geom_line(alpha = 0.6, size = 0.6) +
+  theme_classic() +
+  ggtitle(&amp;quot;Tule Basin Monitoring Wells&amp;quot;) +
+  xlab(&amp;quot;Date&amp;quot;) +
+  ylab(&amp;quot;Depth to Water \n(mbgl)&amp;quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.title = element_text(size=10), legend.position = &amp;quot;bottom&amp;quot;, legend.background = element_rect(fill=&amp;quot;white&amp;quot;,
+                                  size=0.5, linetype=&amp;quot;solid&amp;quot;, 
+                                  colour =&amp;quot;black&amp;quot;)) +
+  guides(color=guide_legend(&amp;quot;Well ID | Depth (mbgl) &amp;quot;)) +
+  scale_x_continuous(limits = c(1975, 2020)) +
+  scale_y_reverse(limits = c(175,0)) +
+ scale_color_manual(values = c(&amp;quot;gold3&amp;quot;, &amp;quot;lightskyblue3&amp;quot;, &amp;quot;cornsilk4&amp;quot;, &amp;quot;tomato3&amp;quot;, &amp;quot;darkseagreen3&amp;quot;, &amp;quot;darkorange2&amp;quot;), labels = c(&amp;quot;18620 | 427&amp;quot;, &amp;quot;19166 | 556&amp;quot;, &amp;quot;19536 | 64&amp;quot;, &amp;quot;20214 | 307&amp;quot;, &amp;quot;22235 | 357&amp;quot;, &amp;quot;34727 | 549&amp;quot;)) 
+
+tule_plot&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/gw_tule_dtw/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#18620 - 427m, 19166 - 556m, 19536|64, 20214|307, 22235|357, 34727|549&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#####Problem 2
+
+tule_two &amp;lt;- tule_join %&amp;gt;% 
+  filter(max_date &amp;gt; &amp;quot;2018.999&amp;quot;) %&amp;gt;% 
+  filter(stn_id == &amp;quot;18621&amp;quot; | stn_id == &amp;quot;18890&amp;quot; | stn_id == &amp;quot;20188&amp;quot; | stn_id == &amp;quot;20211&amp;quot; | stn_id == &amp;quot;34727&amp;quot;)
+
+
+tule_plot_2 &amp;lt;- ggplot(data = tule_two, aes(x = decimal_year_of_measurement, y = depth_to_water_m, color = stn_id)) + 
+  geom_point(alpha = 0.6, size = 0.5) + 
+  geom_line(alpha = 0.6, size = 0.6) +
+  theme_classic() +
+  ggtitle(&amp;quot;Tule Basin Monitoring Wells&amp;quot;) +
+  xlab(&amp;quot;Date&amp;quot;) +
+  ylab(&amp;quot;Depth to Water \n(mbgl)&amp;quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.title = element_text(size=10), legend.position = &amp;quot;bottom&amp;quot;, legend.background = element_rect(fill=&amp;quot;white&amp;quot;,
+                                  size=0.5, linetype=&amp;quot;solid&amp;quot;, 
+                                  colour =&amp;quot;black&amp;quot;)) +
+  guides(color=guide_legend(&amp;quot;Well ID | Depth (mbgl) &amp;quot;)) +
+  scale_x_continuous(limits = c(2007, 2019.99)) +
+  scale_y_reverse(limits = c(175,0)) +
+ scale_color_manual(values = c(&amp;quot;cornsilk4&amp;quot;, &amp;quot;lightskyblue3&amp;quot;, &amp;quot;gold3&amp;quot;, &amp;quot;darkseagreen3&amp;quot;, &amp;quot;tomato3&amp;quot;), labels = c(&amp;quot;18621 | 427&amp;quot;, &amp;quot;18890 | 549&amp;quot;, &amp;quot;20188 | 366&amp;quot;, &amp;quot;20211 | 426&amp;quot;, &amp;quot;34727 | 549&amp;quot;)) 
+
+tule_plot_2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: Removed 208 rows containing missing values (geom_point).&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: Removed 203 row(s) containing missing values (geom_path).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/gw_tule_dtw/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#GW measurements and stations, reading in as seperate sheets
+
+gw_data_measure &amp;lt;- read_xlsx(&amp;quot;CaliforniaWellWaterLevelData_measurements.xlsx&amp;quot;) %&amp;gt;% 
+  clean_names() %&amp;gt;% 
+  filter(basin == &amp;quot;TULE&amp;quot;) %&amp;gt;% 
+  mutate(basin = str_to_lower(basin)) %&amp;gt;% 
+  drop_na()
+
+gw_data_stations &amp;lt;- read_xlsx(&amp;quot;CaliforniaWellWaterLevelData_station.xlsx&amp;quot;) %&amp;gt;% 
+  clean_names() %&amp;gt;% 
+  filter(basin == &amp;quot;TULE&amp;quot;) %&amp;gt;% 
+  mutate(basin = str_to_lower(basin)) %&amp;gt;% 
+  drop_na()
+
+#Joined by stn_id
+tule_join &amp;lt;- full_join(gw_data_measure, gw_data_stations, by = &amp;quot;stn_id&amp;quot;) %&amp;gt;% 
+  select(&amp;quot;stn_id&amp;quot;, &amp;quot;lat&amp;quot;, &amp;quot;lon&amp;quot;, &amp;quot;well_depth_m.x&amp;quot;, &amp;quot;ground_surface_elevation_masl&amp;quot;, &amp;quot;decimal_year_of_measurement&amp;quot;, &amp;quot;depth_to_water_m&amp;quot;, &amp;quot;basin.x&amp;quot;, &amp;quot;min_date&amp;quot;, &amp;quot;max_date&amp;quot;, &amp;quot;min_date_after_1975&amp;quot;, &amp;quot;min_date_after_2006_9999&amp;quot;) 
+
+tule_join$stn_id &amp;lt;- as.character(as.numeric(tule_join$stn_id))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Wells need one measurement between 2006.9 and 2009.9, and after 2016.9
+
+#SD after 20016.9 
+tule_late &amp;lt;- tule_join  %&amp;gt;% 
+  filter(decimal_year_of_measurement &amp;gt; &amp;quot;2016&amp;quot;) %&amp;gt;% 
+  group_by(stn_id) %&amp;gt;% 
+  mutate(median_late = median(depth_to_water_m)) %&amp;gt;% 
+  distinct(stn_id, .keep_all = TRUE) 
+  
+#SD between 2006.9 - 2009.9 
+tule_early &amp;lt;- tule_join %&amp;gt;% 
+  filter(!decimal_year_of_measurement &amp;lt; 2006.9) %&amp;gt;% 
+  filter(!decimal_year_of_measurement &amp;gt; 2009.9) %&amp;gt;% 
+  group_by(stn_id) %&amp;gt;% 
+  mutate(median_early = median(depth_to_water_m)) %&amp;gt;% 
+  distinct(stn_id, .keep_all = TRUE)
+
+#Joined by stn_id
+tule_join_median &amp;lt;- full_join(tule_late, tule_early, by = &amp;quot;stn_id&amp;quot;) %&amp;gt;% 
+  drop_na() %&amp;gt;% 
+  group_by(stn_id) %&amp;gt;% 
+  mutate(median_diff = (median_early - median_late))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#plot difference in median
+
+tule_plot_median &amp;lt;- ggplot(data = tule_join_median, aes(x = median_diff, y = well_depth_m.x.y, color = stn_id)) + 
+  geom_point(alpha = 0.6, size = 5) +
+  theme_classic() +
+  ggtitle(&amp;quot;Tule Basin Monitoring Wells&amp;quot;) +
+  xlab(&amp;quot;\nDifference in Median Depth to Water (m)\n&amp;quot;) +
+  ylab(&amp;quot;Well Depth (mbgl)\n&amp;quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5), plot.caption = element_text(hjust = 0)) +
+  labs(caption = &amp;quot;Figure 1. 22 Tule monitoring wells, difference in depth to water between 2006 - 2009 and post 2016 time periods. \nThe (median well water level measurement made between the decimal dates of 2006.9999 to \n2009.9999) minus (median well water level measurement made more recently than \ndecimal date 2016.9999) is displayed here for each well and plotted by well drilling depth.&amp;quot;) +
+  theme(legend.title = element_text(size=10), legend.position = &amp;quot;none&amp;quot;) +
+  scale_color_paletteer_d(&amp;quot;palettesForR::Coldfire&amp;quot;) +
+  scale_y_reverse(limits = c(600,0)) 
+
+ 
+tule_plot_median&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/project/gw_tule_dtw/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -803,27 +1315,6 @@ Three
       <pubDate>Thu, 28 Jun 2018 00:00:00 +0100</pubDate>
       <guid>/terms/</guid>
       <description>&lt;p&gt;&amp;hellip;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>External Project</title>
-      <link>/project/external-project/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/external-project/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Internal Project</title>
-      <link>/project/internal-project/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/internal-project/</guid>
-      <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.&lt;/p&gt;
-&lt;p&gt;Nullam vel molestie justo. Curabitur vitae efficitur leo. In hac habitasse platea dictumst. Sed pulvinar mauris dui, eget varius purus congue ac. Nulla euismod, lorem vel elementum dapibus, nunc justo porta mi, sed tempus est est vel tellus. Nam et enim eleifend, laoreet sem sit amet, elementum sem. Morbi ut leo congue, maximus velit ut, finibus arcu. In et libero cursus, rutrum risus non, molestie leo. Nullam congue quam et volutpat malesuada. Sed risus tortor, pulvinar et dictum nec, sodales non mi. Phasellus lacinia commodo laoreet. Nam mollis, erat in feugiat consectetur, purus eros egestas tellus, in auctor urna odio at nibh. Mauris imperdiet nisi ac magna convallis, at rhoncus ligula cursus.&lt;/p&gt;
-&lt;p&gt;Cras aliquam rhoncus ipsum, in hendrerit nunc mattis vitae. Duis vitae efficitur metus, ac tempus leo. Cras nec fringilla lacus. Quisque sit amet risus at ipsum pharetra commodo. Sed aliquam mauris at consequat eleifend. Praesent porta, augue sed viverra bibendum, neque ante euismod ante, in vehicula justo lorem ac eros. Suspendisse augue libero, venenatis eget tincidunt ut, malesuada at lorem. Donec vitae bibendum arcu. Aenean maximus nulla non pretium iaculis. Quisque imperdiet, nulla in pulvinar aliquet, velit quam ultrices quam, sit amet fringilla leo sem vel nunc. Mauris in lacinia lacus.&lt;/p&gt;
-&lt;p&gt;Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.&lt;/p&gt;
-&lt;p&gt;Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.&lt;/p&gt;
 </description>
     </item>
     

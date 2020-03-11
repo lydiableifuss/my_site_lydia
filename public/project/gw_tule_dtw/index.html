@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Lydia Bleifuss">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Analysis and vizualizations of Tule Groundwater Basin declining well water levels.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/project/gw_tule_dtw/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#CD5B45">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cutive+Mono%7CLora:400,700%7CRoboto:400,700&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="/project/gw_tule_dtw/">
+
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="Lydia Bleifuss">
+  <meta property="og:url" content="/project/gw_tule_dtw/">
+  <meta property="og:title" content="Tule Groundwater Basin | Lydia Bleifuss">
+  <meta property="og:description" content="Analysis and vizualizations of Tule Groundwater Basin declining well water levels."><meta property="og:image" content="/project/gw_tule_dtw/featured.jpeg">
+  <meta property="twitter:image" content="/project/gw_tule_dtw/featured.jpeg"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2020-01-09T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2020-01-09T15:02:28-08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/project/gw_tule_dtw/"
+  },
+  "headline": "Tule Groundwater Basin",
+  
+  "image": [
+    "/project/gw_tule_dtw/featured.jpeg"
+  ],
+  
+  "datePublished": "2020-01-09T00:00:00Z",
+  "dateModified": "2020-01-09T15:02:28-08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Lydia Bleifuss"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Lydia Bleifuss",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img//"
+    }
+  },
+  "description": "Analysis and vizualizations of Tule Groundwater Basin declining well water levels."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Tule Groundwater Basin | Lydia Bleifuss</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Lydia Bleifuss</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Lydia Bleifuss</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>About</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#experience"><span>Experience</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#skills"><span>Skills</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#courses"><span>Key Coursework</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/files/cv.pdf"><span>Resume</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article article-project">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+
+<div class="article-container pt-3">
+  <h1>Tule Groundwater Basin</h1>
+
+  
+
+  
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Jan 9, 2020
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 932px;">
+  <div style="position: relative">
+    <img src="/project/gw_tule_dtw/featured_hu987595e8d7af7420f8429c59b213cdc5_160203_720x0_resize_q90_lanczos.jpeg" alt="" class="featured-image">
+    
+  </div>
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+
+<pre class="r"><code>#GW measurements and stations, reading in as seperate sheets
+
+gw_data_measure &lt;- read_xlsx( &quot;CaliforniaWellWaterLevelData_measurements.xlsx&quot;) %&gt;% 
+  clean_names() %&gt;% 
+  filter(basin == &quot;TULE&quot;) %&gt;% 
+  mutate(basin = str_to_lower(basin)) %&gt;% 
+  drop_na()
+
+
+gw_data_stations &lt;- read_xlsx(&quot;CaliforniaWellWaterLevelData_station.xlsx&quot;) %&gt;% 
+  clean_names() %&gt;% 
+  filter(basin == &quot;TULE&quot;) %&gt;% 
+  mutate(basin = str_to_lower(basin)) %&gt;% 
+  drop_na()
+
+#Joined by stn_id
+tule_join &lt;- full_join(gw_data_measure, gw_data_stations, by = &quot;stn_id&quot;) %&gt;% 
+  select(&quot;stn_id&quot;, &quot;well_depth_m.x&quot;, &quot;ground_surface_elevation_masl&quot;, &quot;decimal_year_of_measurement&quot;, &quot;depth_to_water_m&quot;, &quot;basin.x&quot;, &quot;min_date&quot;, &quot;max_date&quot;, &quot;min_date_after_1975&quot;, &quot;min_date_after_2006_9999&quot;) 
+
+tule_join$stn_id &lt;- as.character(as.numeric(tule_join$stn_id))</code></pre>
+<pre class="r"><code># Problem 1 
+
+
+tule_one &lt;- tule_join %&gt;% 
+  filter(min_date_after_1975 &lt; &quot;1980&quot;) %&gt;% 
+  filter(max_date &gt; &quot;2015&quot;) %&gt;% 
+  filter(stn_id == &quot;18620&quot; | stn_id == &quot;19166&quot; | stn_id == &quot;20214&quot; | stn_id == &quot;19536&quot; | stn_id == &quot;22235&quot; | stn_id == &quot;34727&quot;)
+
+####18620
+#W1: add a column that calculated median between 1975 - 1980
+tule_80_w1 &lt;- tule_one %&gt;% 
+  filter(stn_id == &quot;18620&quot;) %&gt;% 
+  filter(decimal_year_of_measurement &lt; &quot;1980&quot;) 
+  
+median_80_w1 &lt;- median(tule_80_w1$depth_to_water_m)
+median_80_w1 #86.25</code></pre>
+<pre><code>## [1] 86.2584</code></pre>
+<pre class="r"><code>#W1: add a column that calculated median between 2015 - 2020
+tule_15_w1 &lt;- tule_one %&gt;% 
+  filter(stn_id == &quot;18620&quot;) %&gt;% 
+  filter(decimal_year_of_measurement &gt; &quot;2015&quot;) 
+  
+median_15_w1 &lt;- median(tule_15_w1$depth_to_water_m)
+median_15_w1 #96.31</code></pre>
+<pre><code>## [1] 96.3168</code></pre>
+<pre class="r"><code>####19166
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w2 &lt;- tule_one %&gt;% 
+  filter(stn_id == &quot;19166&quot;) %&gt;% 
+  filter(decimal_year_of_measurement &lt; &quot;1980&quot;) 
+  
+median_80_w2 &lt;- median(tule_80_w2$depth_to_water_m)
+median_80_w2 </code></pre>
+<pre><code>## [1] 115.5192</code></pre>
+<pre class="r"><code>#W2: add a column that calculated median between 2015 - 2020
+tule_15_w2 &lt;- tule_one %&gt;% 
+  filter(stn_id == &quot;19166&quot;) %&gt;% 
+  filter(decimal_year_of_measurement &gt; &quot;2015&quot;) 
+  
+median_15_w2 &lt;- median(tule_15_w2$depth_to_water_m)
+median_15_w2 </code></pre>
+<pre><code>## [1] 148.4376</code></pre>
+<pre class="r"><code>####19536
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w3 &lt;- tule_one %&gt;% 
+  filter(stn_id == &quot;19536&quot;) %&gt;% 
+  filter(decimal_year_of_measurement &lt; &quot;1980&quot;) 
+  
+median_80_w3 &lt;- median(tule_80_w3$depth_to_water_m)
+median_80_w3 </code></pre>
+<pre><code>## [1] 19.812</code></pre>
+<pre class="r"><code>#W2: add a column that calculated median between 2015 - 2020
+tule_15_w3 &lt;- tule_one %&gt;% 
+  filter(stn_id == &quot;19536&quot;) %&gt;% 
+  filter(decimal_year_of_measurement &gt; &quot;2015&quot;) 
+  
+median_15_w3 &lt;- median(tule_15_w3$depth_to_water_m)
+median_15_w3 </code></pre>
+<pre><code>## [1] 22.41804</code></pre>
+<pre class="r"><code>####20214
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w4 &lt;- tule_one %&gt;% 
+  filter(stn_id == &quot;20214&quot;) %&gt;% 
+  filter(decimal_year_of_measurement &lt; &quot;1980&quot;) 
+  
+median_80_w4 &lt;- median(tule_80_w4$depth_to_water_m)
+median_80_w4</code></pre>
+<pre><code>## [1] 68.7324</code></pre>
+<pre class="r"><code>#W2: add a column that calculated median between 2015 - 2020
+tule_15_w4 &lt;- tule_one %&gt;% 
+  filter(stn_id == &quot;20214&quot;) %&gt;% 
+  filter(decimal_year_of_measurement &gt; &quot;2015&quot;) 
+  
+median_15_w4 &lt;- median(tule_15_w4$depth_to_water_m)
+median_15_w4 </code></pre>
+<pre><code>## [1] 90.2208</code></pre>
+<pre class="r"><code>####22235
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w5 &lt;- tule_one %&gt;% 
+  filter(stn_id == &quot;22235&quot;) %&gt;% 
+  filter(decimal_year_of_measurement &lt; &quot;1980&quot;) 
+  
+median_80_w5 &lt;- median(tule_80_w5$depth_to_water_m)
+median_80_w5</code></pre>
+<pre><code>## [1] 30.54096</code></pre>
+<pre class="r"><code>#W2: add a column that calculated median between 2015 - 2020
+tule_15_w5 &lt;- tule_one %&gt;% 
+  filter(stn_id == &quot;22235&quot;) %&gt;% 
+  filter(decimal_year_of_measurement &gt; &quot;2015&quot;) 
+  
+median_15_w5 &lt;- median(tule_15_w5$depth_to_water_m)
+median_15_w5 </code></pre>
+<pre><code>## [1] 60.68568</code></pre>
+<pre class="r"><code>#Plot 5  wells (Problem 1) 
+
+tule_plot &lt;- ggplot(data = tule_one, aes(x = decimal_year_of_measurement, y = depth_to_water_m, color = stn_id)) + 
+  geom_point(alpha = 0.6, size = 0.5) + 
+  geom_line(alpha = 0.6, size = 0.6) +
+  theme_classic() +
+  ggtitle(&quot;Tule Basin Monitoring Wells&quot;) +
+  xlab(&quot;Date&quot;) +
+  ylab(&quot;Depth to Water \n(mbgl)&quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.title = element_text(size=10), legend.position = &quot;bottom&quot;, legend.background = element_rect(fill=&quot;white&quot;,
+                                  size=0.5, linetype=&quot;solid&quot;, 
+                                  colour =&quot;black&quot;)) +
+  guides(color=guide_legend(&quot;Well ID | Depth (mbgl) &quot;)) +
+  scale_x_continuous(limits = c(1975, 2020)) +
+  scale_y_reverse(limits = c(175,0)) +
+ scale_color_manual(values = c(&quot;gold3&quot;, &quot;lightskyblue3&quot;, &quot;cornsilk4&quot;, &quot;tomato3&quot;, &quot;darkseagreen3&quot;, &quot;darkorange2&quot;), labels = c(&quot;18620 | 427&quot;, &quot;19166 | 556&quot;, &quot;19536 | 64&quot;, &quot;20214 | 307&quot;, &quot;22235 | 357&quot;, &quot;34727 | 549&quot;)) 
+
+tule_plot</code></pre>
+<p><img src="/project/gw_tule_dtw/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>#18620 - 427m, 19166 - 556m, 19536|64, 20214|307, 22235|357, 34727|549</code></pre>
+<pre class="r"><code>#####Problem 2
+
+tule_two &lt;- tule_join %&gt;% 
+  filter(max_date &gt; &quot;2018.999&quot;) %&gt;% 
+  filter(stn_id == &quot;18621&quot; | stn_id == &quot;18890&quot; | stn_id == &quot;20188&quot; | stn_id == &quot;20211&quot; | stn_id == &quot;34727&quot;)
+
+
+tule_plot_2 &lt;- ggplot(data = tule_two, aes(x = decimal_year_of_measurement, y = depth_to_water_m, color = stn_id)) + 
+  geom_point(alpha = 0.6, size = 0.5) + 
+  geom_line(alpha = 0.6, size = 0.6) +
+  theme_classic() +
+  ggtitle(&quot;Tule Basin Monitoring Wells&quot;) +
+  xlab(&quot;Date&quot;) +
+  ylab(&quot;Depth to Water \n(mbgl)&quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.title = element_text(size=10), legend.position = &quot;bottom&quot;, legend.background = element_rect(fill=&quot;white&quot;,
+                                  size=0.5, linetype=&quot;solid&quot;, 
+                                  colour =&quot;black&quot;)) +
+  guides(color=guide_legend(&quot;Well ID | Depth (mbgl) &quot;)) +
+  scale_x_continuous(limits = c(2007, 2019.99)) +
+  scale_y_reverse(limits = c(175,0)) +
+ scale_color_manual(values = c(&quot;cornsilk4&quot;, &quot;lightskyblue3&quot;, &quot;gold3&quot;, &quot;darkseagreen3&quot;, &quot;tomato3&quot;), labels = c(&quot;18621 | 427&quot;, &quot;18890 | 549&quot;, &quot;20188 | 366&quot;, &quot;20211 | 426&quot;, &quot;34727 | 549&quot;)) 
+
+tule_plot_2</code></pre>
+<pre><code>## Warning: Removed 208 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 203 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="/project/gw_tule_dtw/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>#GW measurements and stations, reading in as seperate sheets
+
+gw_data_measure &lt;- read_xlsx(&quot;CaliforniaWellWaterLevelData_measurements.xlsx&quot;) %&gt;% 
+  clean_names() %&gt;% 
+  filter(basin == &quot;TULE&quot;) %&gt;% 
+  mutate(basin = str_to_lower(basin)) %&gt;% 
+  drop_na()
+
+gw_data_stations &lt;- read_xlsx(&quot;CaliforniaWellWaterLevelData_station.xlsx&quot;) %&gt;% 
+  clean_names() %&gt;% 
+  filter(basin == &quot;TULE&quot;) %&gt;% 
+  mutate(basin = str_to_lower(basin)) %&gt;% 
+  drop_na()
+
+#Joined by stn_id
+tule_join &lt;- full_join(gw_data_measure, gw_data_stations, by = &quot;stn_id&quot;) %&gt;% 
+  select(&quot;stn_id&quot;, &quot;lat&quot;, &quot;lon&quot;, &quot;well_depth_m.x&quot;, &quot;ground_surface_elevation_masl&quot;, &quot;decimal_year_of_measurement&quot;, &quot;depth_to_water_m&quot;, &quot;basin.x&quot;, &quot;min_date&quot;, &quot;max_date&quot;, &quot;min_date_after_1975&quot;, &quot;min_date_after_2006_9999&quot;) 
+
+tule_join$stn_id &lt;- as.character(as.numeric(tule_join$stn_id))</code></pre>
+<pre class="r"><code>#Wells need one measurement between 2006.9 and 2009.9, and after 2016.9
+
+#SD after 20016.9 
+tule_late &lt;- tule_join  %&gt;% 
+  filter(decimal_year_of_measurement &gt; &quot;2016&quot;) %&gt;% 
+  group_by(stn_id) %&gt;% 
+  mutate(median_late = median(depth_to_water_m)) %&gt;% 
+  distinct(stn_id, .keep_all = TRUE) 
+  
+#SD between 2006.9 - 2009.9 
+tule_early &lt;- tule_join %&gt;% 
+  filter(!decimal_year_of_measurement &lt; 2006.9) %&gt;% 
+  filter(!decimal_year_of_measurement &gt; 2009.9) %&gt;% 
+  group_by(stn_id) %&gt;% 
+  mutate(median_early = median(depth_to_water_m)) %&gt;% 
+  distinct(stn_id, .keep_all = TRUE)
+
+#Joined by stn_id
+tule_join_median &lt;- full_join(tule_late, tule_early, by = &quot;stn_id&quot;) %&gt;% 
+  drop_na() %&gt;% 
+  group_by(stn_id) %&gt;% 
+  mutate(median_diff = (median_early - median_late))</code></pre>
+<pre class="r"><code>#plot difference in median
+
+tule_plot_median &lt;- ggplot(data = tule_join_median, aes(x = median_diff, y = well_depth_m.x.y, color = stn_id)) + 
+  geom_point(alpha = 0.6, size = 5) +
+  theme_classic() +
+  ggtitle(&quot;Tule Basin Monitoring Wells&quot;) +
+  xlab(&quot;\nDifference in Median Depth to Water (m)\n&quot;) +
+  ylab(&quot;Well Depth (mbgl)\n&quot;) +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5), plot.caption = element_text(hjust = 0)) +
+  labs(caption = &quot;Figure 1. 22 Tule monitoring wells, difference in depth to water between 2006 - 2009 and post 2016 time periods. \nThe (median well water level measurement made between the decimal dates of 2006.9999 to \n2009.9999) minus (median well water level measurement made more recently than \ndecimal date 2016.9999) is displayed here for each well and plotted by well drilling depth.&quot;) +
+  theme(legend.title = element_text(size=10), legend.position = &quot;none&quot;) +
+  scale_color_paletteer_d(&quot;palettesForR::Coldfire&quot;) +
+  scale_y_reverse(limits = c(600,0)) 
+
+ 
+tule_plot_median</code></pre>
+<p><img src="/project/gw_tule_dtw/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/analysis/">analysis</a>
+  
+  <a class="badge badge-light" href="/tags/water/">water</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/project/gw_tule_dtw/&amp;text=Tule%20Groundwater%20Basin" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/project/gw_tule_dtw/&amp;t=Tule%20Groundwater%20Basin" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Tule%20Groundwater%20Basin&amp;body=/project/gw_tule_dtw/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/project/gw_tule_dtw/&amp;title=Tule%20Groundwater%20Basin" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Tule%20Groundwater%20Basin%20/project/gw_tule_dtw/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/project/gw_tule_dtw/&amp;title=Tule%20Groundwater%20Basin" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hu4acd935f9e7563371846f93796182552_241734_250x250_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Lydia Bleifuss</a></h5>
+      <h6 class="card-subtitle">Graduate Student | Sustainable Water Markets Fellow</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://linkedin.com/in/lydiableifuss" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/lydiableifuss" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/project/arcswat_monthly/">Santa Cruz Creek Calibration</a></li>
+      
+      <li><a href="/project/steelhead_migration_dam/">Steelhead Passage</a></li>
+      
+      <li><a href="/project/snow_show_hare/">Snow Shoe Hare</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+    <div class="project-related-pages content-widget-hr">
+      
+      
+
+      
+      
+      
+
+      
+      
+      
+
+      
+      
+      
+    </div>
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.a0d331bcd05dbe8b31e244f796710f08.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
