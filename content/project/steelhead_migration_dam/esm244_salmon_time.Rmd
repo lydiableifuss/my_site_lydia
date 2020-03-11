@@ -1,0 +1,165 @@
+---
+title: "ESM 244 - Assignment 2"
+author: "Lydia Bleifuss"
+date: "2/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r}
+#Helpful Packages
+library(tidyverse)
+library(janitor)
+library(here)
+library(skimr)
+library(naniar)
+library(VIM)
+library(ggfortify)
+library(lubridate)
+library(tsibble)
+library(ggthemes)
+library(ggplot2)
+library(gridExtra)
+library(paletteer)
+
+#tsibble
+library(tsibble)
+library(fable)
+library(fabletools)
+library(feasts)
+library(forecast)
+```
+
+
+###Task 2: 
+
+#####1,2] Introductory Summary and Photos
+Steelhead are an important fish within the larger salmonid family that depend on passage up and down the Columbia River Basin to complete its life cycle. 
+
+![**Steelhead Fish.** \n Photo: United States Fish and Wildlife Service, Pacific Region](Fish Data/steelhead.jpg)
+
+The lower Columbia River has been blocked by large hydroelectric dams since the early 1900's. Importantly, the lower Columbia and its dynamic waterfalls were once used as historical fishing grounds by the local Native American Tribes, and were also spiritually important for these same groups. With the construction of large dams, both fish populations and cultural heritage were impacted.
+
+![**Celilo Falls - flooded by Dalles Dam, upstream of Bonneville Dam, in 1957.** \n Photo: Gerald W. Williams Collection](Fish Data/Celilo Falls.jpg)
+
+Bonneville Dam was constructed in 1934 and is the first river-wide barrier moving upstream from the Pacific. The amount of salmonid species that surpass the dam successfully, in both directions, is important to understand the health of the species over time, especially as new fish ladder and water quality regulations develop. 
+
+![**Bonneville Dam, Columbia River Basin, OR, built in 1934.** \n Photo: Forest Service](Fish Data/bonneville-dam-and-people-fishing.jpg)
+
+This analysis focuses on Steelhead passage time series data from the Columbia River DART program, although several salmonid species are tracked within this database. In order to understand the health of Steelhead populations, it is important to look at time series data in a variety of ways. The seasonality of Steelhead passage is especially important to consider, as warmer river waters may push passage earlier into the season. 
+
+Data from: Columbia Basin Research Available here: Adult fish passage (http://www.cbr.washington.edu/dart/query/adult_graph_text)
+
+Citation: Columbia River DART, Columbia Basin Research, University of Washington. (2019). Adult Passage Graphics & Text. Available from http://www.cbr.washington.edu/dart/query/adult_graph_text
+
+#####3] Code
+
+**3(A).** Read in data and clean. Ensure time series data is in tsibble compatable format. 
+```{r}
+salmon_data_all <- read_csv(here::here("Fish Data", "cbr_fish_passage_bonneville_allyrs_steelhead.csv")) %>% 
+  clean_names() %>% 
+  mutate(location = str_to_lower(location)) %>% #Making location all lower case, column names already lowercase but used clean_names() to get mm-dd into nicer format.
+  mutate(date = paste(year, mm_dd, sep = "-")) %>% #Get all date into into one column. 
+  mutate(date_new = lubridate::parse_date_time(date, "ydm")) %>% #Took out 29th day of February (61 total, Lubridate make an assumption that 29th day in Feb doesn't make sense because there are 28 days).
+  mutate(date_month = yearmonth(date_new)) %>% #This is the last and needed step to make sure that tsibble can use the time seris data (coerce to tsibble `yearmonth` format). 
+  mutate(month = month(date_new)) #Have month column alone for use later. 
+```
+
+
+**3(B).** Explore data and missingness. 
+```{r}
+#salmon_skim <- skim(salmon_data)
+
+salmon_data <- salmon_data_all %>% 
+  drop_na(date_new, value) %>% #Afer missingess exploration, feel comfortable with these exclusions. 
+  select(date_new, date_month, value, year, month) 
+```
+
+**3(C).** Daily time series plot of the original observations (daily data).
+```{r}
+salmon_daily <- ggplot(salmon_data, aes(x = date_new, y = value/1000)) +
+  geom_line(color = "olivedrab4") +
+  geom_col(width = 0.5, show.legend = FALSE, alpha = 0.5) +
+  theme_classic() +
+   ggtitle("Daily Steelhead Salmon Passage (1939 - 2019)\n") +
+  xlab("\nDay") +
+  ylab("Steelhead Passage \n(Thousands/Day)\n") +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(expand = c(0,0)) +
+    labs(caption = "\nFigure 3. Daily steelhead salmon passage across the Bonneville Dam (Oregon) from years 1939 to 2019.") # Moved caption down here because it was altering the rest of the plot. 
+
+salmon_daily
+```
+
+**3(D).** Exploring different time series plots.
+```{r}
+#Aggregate by month so there are no gaps tsibble has problems with. Also more helpful to look at monthly totals, daily is too much to get a sense from. 
+salmon_month <- salmon_data %>% 
+  group_by(date_month) %>% 
+  mutate(month_fish = sum(value)) %>% 
+  distinct(date_month, .keep_all = TRUE)
+  
+# Coerce to a tsibble:
+salmon_new <- as_tsibble(salmon_month, index = date_month) %>% 
+  tsibble::fill_gaps()
+
+salmon_auto <- salmon_new %>% 
+  feasts::autoplot(month_fish) #Helpful to get basic understanding of what monthly totals look like. 
+salmon_subseries <- salmon_new %>% 
+  feasts::gg_subseries(month_fish) #Great graphical exploration, provides mean for each month. Really there are three months of interest, July, August and September. 
+#salmon_new %>% feasts::gg_season(month_fish) #This still does not work on this computer despite download. 
+```
+
+**3(E).** Monthly time series plot of the original observations (monthly totals).
+```{r}
+# Seasonal (MONTHLY) plot: 
+salmon_season <- ggplot(data = salmon_month, 
+       aes(x = month, y = month_fish/1000, group = year)) +
+  geom_line(aes(color = year), alpha = 0.5, size = 0.8) +
+  theme_classic()+
+   ggtitle("Seasonal Steelhead Salmon Passage (1939 - 2019)") +
+  xlab("\nMonth - Water Year") +
+  ylab("Steelhead Passage \n(Thousands/Month)\n") +
+  guides(color=guide_legend("Year (1939 - 2019)")) +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) + scale_x_discrete(limits=c("10","11","12","1","2","3","4","5","6","7","8","9")) +
+  scale_y_continuous(expand = c(0,0)) +
+  theme(legend.title = element_text(size=8), legend.position = "bottom", legend.background = element_rect(fill="white",
+                                  size=0.5, linetype="solid", 
+                                  colour ="black")) +
+  scale_color_paletteer_c("ggthemes::Classic Red-Green") +
+    labs(caption = "\nFigure 2. Seasonal steelhead salmon passage across the Bonneville Dam (Oregon) from years \n1939 to 2019 by month. Steelhead passage has been higher in last decade.") # Moved caption down here because it was altering the rest of the plot. 
+
+salmon_season
+```
+
+**3(F).** Yearly time series plot of the original observations (yearly totals).
+```{r}
+# Annual plot: aggregate by year first. 
+salmon_year <- salmon_month %>% 
+  group_by(year) %>% 
+   mutate(year_fish = sum(month_fish)) %>% 
+  distinct(year, .keep_all = TRUE)
+
+
+salmon_annual <- ggplot(data = salmon_year, 
+       aes(x = year, y = year_fish/1000, fill = "darksalmon")) +
+  geom_col(width = 0.5, show.legend = FALSE, alpha = 0.8) +
+  theme_classic() +
+   ggtitle("Annual Steelhead Salmon Passage (1939 - 2019)\n") +
+  xlab("\nYear") +
+  ylab("Steelhead Passage \n(Thousands/Year)\n") +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  scale_x_continuous(expand = c(0,0), limits = c(1939,2020)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(expand = c(0,0)) +
+    labs(caption = "\nFigure 3. Total annual steelhead salmon passage across the Bonneville Dam (Oregon) from years \n1939 to 2019 by year. Steelhead passage has been higher in last decade.") # Moved caption down here because it was altering the rest of the plot. 
+
+salmon_annual
+```
