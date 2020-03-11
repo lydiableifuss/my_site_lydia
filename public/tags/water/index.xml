@@ -38,8 +38,8 @@ sc_usgs_flow_month &amp;lt;- sc_usgs_flow %&amp;gt;%
   mutate(usgs_month_flow_cfs = sum(dis_cfs)) #Now aggregating CFS by month for report &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Santa Cruz Creek Plot&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sc_usgs_month_plot &amp;lt;-ggplot(sc_usgs_flow_month, aes(x = date, y = usgs_month_flow)) +
-  geom_point(color = &amp;quot;dark blue&amp;quot;) +
-  geom_line(color = &amp;quot;dark blue&amp;quot;) +
+  #geom_point(color = &amp;quot;firebrick1&amp;quot;) +
+  geom_line(color = &amp;quot;firebrick1&amp;quot;) +
   theme_classic() +
   ggtitle(&amp;quot;Monthly Flow Santa Cruz Creek at USGS Santa Cruz Creek (1980 - 2018)&amp;quot;) +
   xlab(&amp;quot;Date&amp;quot;) +
@@ -66,8 +66,8 @@ sy_sub4_swat_cach_cn30_k100_awc2 &amp;lt;- sy_sub4_swat_cach_cn30_k100_awc2 %&am
   mutate(month_flow_cfs = sum(flow_ou_tcms*35.3))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;ArcSWAT calibration Plot&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sy_sub4_cach_calib_plot &amp;lt;-ggplot(sy_sub4_swat_cach_cn30_k100_awc2, aes(x = date, y = month_flow)) +
-  geom_point(color = &amp;quot;dark blue&amp;quot;) +
-  geom_line(color = &amp;quot;dark blue&amp;quot;) +
+ # geom_point(color = &amp;quot;turquoise4&amp;quot;) +
+  geom_line(color = &amp;quot;turquoise4&amp;quot;) +
   theme_classic() +
   ggtitle(&amp;quot;Monthly Flow Sub-Basin 4 ArcSWAT (1980 - 2018)&amp;quot;) +
   xlab(&amp;quot;Date&amp;quot;) +
@@ -76,50 +76,6 @@ sy_sub4_swat_cach_cn30_k100_awc2 &amp;lt;- sy_sub4_swat_cach_cn30_k100_awc2 %&am
 
 sy_sub4_cach_calib_plot&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/project/arcswat_monthly/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;theme_black = function(base_size = 12, base_family = &amp;quot;&amp;quot;) {
- 
-  theme_grey(base_size = base_size, base_family = base_family) %+replace%
- 
-    theme(
-      # Specify axis options
-      axis.line = element_blank(),  
-      axis.text.x = element_text(size = base_size*0.8, color = &amp;quot;white&amp;quot;, lineheight = 0),  
-      axis.text.y = element_text(size = base_size*0.8, color = &amp;quot;white&amp;quot;, lineheight = 0),  
-      #axis.ticks = element_line(color = &amp;quot;white&amp;quot;, size  =  0.2),  
-      axis.title.x = element_text(size = base_size, color = &amp;quot;white&amp;quot;, margin = margin(0, 10, 0, 0)),  
-      axis.title.y = element_text(size = base_size, color = &amp;quot;white&amp;quot;, angle = 90, margin = margin(0, 10, 0, 0)),  
-      axis.ticks.length = unit(0.3, &amp;quot;lines&amp;quot;),   
-      # Specify legend options
-      legend.background = element_rect(color = NA, fill = &amp;quot;black&amp;quot;),  
-      legend.key = element_rect(color = &amp;quot;white&amp;quot;,  fill = &amp;quot;black&amp;quot;),  
-      legend.key.size = unit(1.2, &amp;quot;lines&amp;quot;),  
-      legend.key.height = NULL,  
-      legend.key.width = NULL,      
-      legend.text = element_text(size = base_size*0.8, color = &amp;quot;white&amp;quot;),  
-      legend.title = element_text(size = base_size*0.8, face = &amp;quot;bold&amp;quot;, hjust = 0, color = &amp;quot;white&amp;quot;),  
-      legend.position = &amp;quot;bottom&amp;quot;,  
-      legend.text.align = NULL,  
-      legend.title.align = NULL,  
-      legend.direction = &amp;quot;horizontal&amp;quot;,  
-      legend.box = NULL, 
-      # Specify panel options
-      panel.background = element_rect(fill = &amp;quot;black&amp;quot;, color  =  NA),  
-      panel.border = element_rect(fill = NA, color = &amp;quot;white&amp;quot;),  
-      panel.grid.major = element_line(color = &amp;quot;black&amp;quot;),  
-      panel.grid.minor = element_line(color = &amp;quot;black&amp;quot;),  
-      panel.margin = unit(0, &amp;quot;lines&amp;quot;),   
-      # Specify facetting options
-      strip.background = element_rect(fill = &amp;quot;grey30&amp;quot;, color = &amp;quot;grey10&amp;quot;),  
-      strip.text.x = element_text(size = base_size*0.8, color = &amp;quot;white&amp;quot;),  
-      strip.text.y = element_text(size = base_size*0.8, color = &amp;quot;white&amp;quot;,angle = -90),  
-      # Specify plot options
-      plot.background = element_rect(color = &amp;quot;black&amp;quot;, fill = &amp;quot;black&amp;quot;),  
-      plot.title = element_text(size = base_size*1.2, color = &amp;quot;white&amp;quot;),  
-      plot.margin = unit(rep(1, 4), &amp;quot;lines&amp;quot;)
- 
-    )
- 
-}&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Compare Santa Cruz USGS gauge with ArcSWAT calibration attempt&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Combining Sub4 SWAT CN 30 and Ch K2 100 and AWC +0.20 vs. USGS Santa Cruz
 sc_flow_month_comp_CN &amp;lt;-ggplot() +
@@ -143,7 +99,7 @@ theme(plot.title = element_text(hjust = 0.5))+
   #theme_black()
 
 plot(sc_flow_month_comp_CN)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/project/arcswat_monthly/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/project/arcswat_monthly/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     

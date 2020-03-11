@@ -3,6 +3,7 @@ name = "custom"
 
 # Is theme light or dark?
 light = true
+dark = false
 
 # Primary
 primary = "#CD5B45"
