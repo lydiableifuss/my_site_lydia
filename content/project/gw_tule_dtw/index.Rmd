@@ -1,0 +1,283 @@
+---
+title: 'Tule Groundwater Basin'
+author: ''
+date: '2020-01-09'
+slug: gw_tule_dtw
+categories: []
+tags:
+ - analysis
+ - water
+subtitle: ''
+summary: 'Analysis and vizualizations of Tule Groundwater Basin declining well water levels.'
+authors: []
+lastmod: '2020-01-09T15:02:28-08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(janitor)
+library(here)
+library(readxl)
+library(ggplot2)
+library(paletteer)
+
+```
+
+
+```{r}
+#GW measurements and stations, reading in as seperate sheets
+
+gw_data_measure <- read_xlsx( "CaliforniaWellWaterLevelData_measurements.xlsx") %>% 
+  clean_names() %>% 
+  filter(basin == "TULE") %>% 
+  mutate(basin = str_to_lower(basin)) %>% 
+  drop_na()
+
+
+gw_data_stations <- read_xlsx("CaliforniaWellWaterLevelData_station.xlsx") %>% 
+  clean_names() %>% 
+  filter(basin == "TULE") %>% 
+  mutate(basin = str_to_lower(basin)) %>% 
+  drop_na()
+
+#Joined by stn_id
+tule_join <- full_join(gw_data_measure, gw_data_stations, by = "stn_id") %>% 
+  select("stn_id", "well_depth_m.x", "ground_surface_elevation_masl", "decimal_year_of_measurement", "depth_to_water_m", "basin.x", "min_date", "max_date", "min_date_after_1975", "min_date_after_2006_9999") 
+
+tule_join$stn_id <- as.character(as.numeric(tule_join$stn_id))
+
+
+```
+
+
+```{r}
+# Problem 1 
+
+
+tule_one <- tule_join %>% 
+  filter(min_date_after_1975 < "1980") %>% 
+  filter(max_date > "2015") %>% 
+  filter(stn_id == "18620" | stn_id == "19166" | stn_id == "20214" | stn_id == "19536" | stn_id == "22235" | stn_id == "34727")
+
+####18620
+#W1: add a column that calculated median between 1975 - 1980
+tule_80_w1 <- tule_one %>% 
+  filter(stn_id == "18620") %>% 
+  filter(decimal_year_of_measurement < "1980") 
+  
+median_80_w1 <- median(tule_80_w1$depth_to_water_m)
+median_80_w1 #86.25
+
+#W1: add a column that calculated median between 2015 - 2020
+tule_15_w1 <- tule_one %>% 
+  filter(stn_id == "18620") %>% 
+  filter(decimal_year_of_measurement > "2015") 
+  
+median_15_w1 <- median(tule_15_w1$depth_to_water_m)
+median_15_w1 #96.31
+
+
+####19166
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w2 <- tule_one %>% 
+  filter(stn_id == "19166") %>% 
+  filter(decimal_year_of_measurement < "1980") 
+  
+median_80_w2 <- median(tule_80_w2$depth_to_water_m)
+median_80_w2 
+
+#W2: add a column that calculated median between 2015 - 2020
+tule_15_w2 <- tule_one %>% 
+  filter(stn_id == "19166") %>% 
+  filter(decimal_year_of_measurement > "2015") 
+  
+median_15_w2 <- median(tule_15_w2$depth_to_water_m)
+median_15_w2 
+
+
+####19536
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w3 <- tule_one %>% 
+  filter(stn_id == "19536") %>% 
+  filter(decimal_year_of_measurement < "1980") 
+  
+median_80_w3 <- median(tule_80_w3$depth_to_water_m)
+median_80_w3 
+
+#W2: add a column that calculated median between 2015 - 2020
+tule_15_w3 <- tule_one %>% 
+  filter(stn_id == "19536") %>% 
+  filter(decimal_year_of_measurement > "2015") 
+  
+median_15_w3 <- median(tule_15_w3$depth_to_water_m)
+median_15_w3 
+
+
+####20214
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w4 <- tule_one %>% 
+  filter(stn_id == "20214") %>% 
+  filter(decimal_year_of_measurement < "1980") 
+  
+median_80_w4 <- median(tule_80_w4$depth_to_water_m)
+median_80_w4
+
+#W2: add a column that calculated median between 2015 - 2020
+tule_15_w4 <- tule_one %>% 
+  filter(stn_id == "20214") %>% 
+  filter(decimal_year_of_measurement > "2015") 
+  
+median_15_w4 <- median(tule_15_w4$depth_to_water_m)
+median_15_w4 
+
+
+####22235
+#W2: add a column that calculated median between 1975 - 1980
+tule_80_w5 <- tule_one %>% 
+  filter(stn_id == "22235") %>% 
+  filter(decimal_year_of_measurement < "1980") 
+  
+median_80_w5 <- median(tule_80_w5$depth_to_water_m)
+median_80_w5
+
+#W2: add a column that calculated median between 2015 - 2020
+tule_15_w5 <- tule_one %>% 
+  filter(stn_id == "22235") %>% 
+  filter(decimal_year_of_measurement > "2015") 
+  
+median_15_w5 <- median(tule_15_w5$depth_to_water_m)
+median_15_w5 
+
+```
+
+
+```{r}
+#Plot 5  wells (Problem 1) 
+
+tule_plot <- ggplot(data = tule_one, aes(x = decimal_year_of_measurement, y = depth_to_water_m, color = stn_id)) + 
+  geom_point(alpha = 0.6, size = 0.5) + 
+  geom_line(alpha = 0.6, size = 0.6) +
+  theme_classic() +
+  ggtitle("Tule Basin Monitoring Wells") +
+  xlab("Date") +
+  ylab("Depth to Water \n(mbgl)") +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.title = element_text(size=10), legend.position = "bottom", legend.background = element_rect(fill="white",
+                                  size=0.5, linetype="solid", 
+                                  colour ="black")) +
+  guides(color=guide_legend("Well ID | Depth (mbgl) ")) +
+  scale_x_continuous(limits = c(1975, 2020)) +
+  scale_y_reverse(limits = c(175,0)) +
+ scale_color_manual(values = c("gold3", "lightskyblue3", "cornsilk4", "tomato3", "darkseagreen3", "darkorange2"), labels = c("18620 | 427", "19166 | 556", "19536 | 64", "20214 | 307", "22235 | 357", "34727 | 549")) 
+
+tule_plot
+#18620 - 427m, 19166 - 556m, 19536|64, 20214|307, 22235|357, 34727|549
+```
+
+
+```{r}
+#####Problem 2
+
+tule_two <- tule_join %>% 
+  filter(max_date > "2018.999") %>% 
+  filter(stn_id == "18621" | stn_id == "18890" | stn_id == "20188" | stn_id == "20211" | stn_id == "34727")
+
+
+tule_plot_2 <- ggplot(data = tule_two, aes(x = decimal_year_of_measurement, y = depth_to_water_m, color = stn_id)) + 
+  geom_point(alpha = 0.6, size = 0.5) + 
+  geom_line(alpha = 0.6, size = 0.6) +
+  theme_classic() +
+  ggtitle("Tule Basin Monitoring Wells") +
+  xlab("Date") +
+  ylab("Depth to Water \n(mbgl)") +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.title = element_text(size=10), legend.position = "bottom", legend.background = element_rect(fill="white",
+                                  size=0.5, linetype="solid", 
+                                  colour ="black")) +
+  guides(color=guide_legend("Well ID | Depth (mbgl) ")) +
+  scale_x_continuous(limits = c(2007, 2019.99)) +
+  scale_y_reverse(limits = c(175,0)) +
+ scale_color_manual(values = c("cornsilk4", "lightskyblue3", "gold3", "darkseagreen3", "tomato3"), labels = c("18621 | 427", "18890 | 549", "20188 | 366", "20211 | 426", "34727 | 549")) 
+
+tule_plot_2
+```
+
+
+```{r}
+#GW measurements and stations, reading in as seperate sheets
+
+gw_data_measure <- read_xlsx("CaliforniaWellWaterLevelData_measurements.xlsx") %>% 
+  clean_names() %>% 
+  filter(basin == "TULE") %>% 
+  mutate(basin = str_to_lower(basin)) %>% 
+  drop_na()
+
+gw_data_stations <- read_xlsx("CaliforniaWellWaterLevelData_station.xlsx") %>% 
+  clean_names() %>% 
+  filter(basin == "TULE") %>% 
+  mutate(basin = str_to_lower(basin)) %>% 
+  drop_na()
+
+#Joined by stn_id
+tule_join <- full_join(gw_data_measure, gw_data_stations, by = "stn_id") %>% 
+  select("stn_id", "lat", "lon", "well_depth_m.x", "ground_surface_elevation_masl", "decimal_year_of_measurement", "depth_to_water_m", "basin.x", "min_date", "max_date", "min_date_after_1975", "min_date_after_2006_9999") 
+
+tule_join$stn_id <- as.character(as.numeric(tule_join$stn_id))
+
+```
+
+```{r}
+
+#Wells need one measurement between 2006.9 and 2009.9, and after 2016.9
+
+#SD after 20016.9 
+tule_late <- tule_join  %>% 
+  filter(decimal_year_of_measurement > "2016") %>% 
+  group_by(stn_id) %>% 
+  mutate(median_late = median(depth_to_water_m)) %>% 
+  distinct(stn_id, .keep_all = TRUE) 
+  
+#SD between 2006.9 - 2009.9 
+tule_early <- tule_join %>% 
+  filter(!decimal_year_of_measurement < 2006.9) %>% 
+  filter(!decimal_year_of_measurement > 2009.9) %>% 
+  group_by(stn_id) %>% 
+  mutate(median_early = median(depth_to_water_m)) %>% 
+  distinct(stn_id, .keep_all = TRUE)
+
+#Joined by stn_id
+tule_join_median <- full_join(tule_late, tule_early, by = "stn_id") %>% 
+  drop_na() %>% 
+  group_by(stn_id) %>% 
+  mutate(median_diff = (median_early - median_late))
+```
+
+```{r}
+#plot difference in median
+
+tule_plot_median <- ggplot(data = tule_join_median, aes(x = median_diff, y = well_depth_m.x.y, color = stn_id)) + 
+  geom_point(alpha = 0.6, size = 5) +
+  theme_classic() +
+  ggtitle("Tule Basin Monitoring Wells") +
+  xlab("\nDifference in Median Depth to Water (m)\n") +
+  ylab("Well Depth (mbgl)\n") +
+  theme(plot.title = element_text(size=12)) +
+  theme(plot.title = element_text(hjust = 0.5), plot.caption = element_text(hjust = 0)) +
+  labs(caption = "Figure 1. 22 Tule monitoring wells, difference in depth to water between 2006 - 2009 and post 2016 time periods. \nThe (median well water level measurement made between the decimal dates of 2006.9999 to \n2009.9999) minus (median well water level measurement made more recently than \ndecimal date 2016.9999) is displayed here for each well and plotted by well drilling depth.") +
+  theme(legend.title = element_text(size=10), legend.position = "none") +
+  scale_color_paletteer_d("palettesForR::Coldfire") +
+  scale_y_reverse(limits = c(600,0)) 
+
+ 
+tule_plot_median
+```
