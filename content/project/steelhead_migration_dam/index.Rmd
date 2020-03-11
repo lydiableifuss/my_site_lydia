@@ -1,8 +1,23 @@
 ---
-title: "ESM 244 - Assignment 2"
-author: "Lydia Bleifuss"
-date: "2/16/2020"
-output: html_document
+title: 'Steelhead Passage & Bonneville Dam'
+author: ''
+date: '2020-01-09'
+slug: steelhead_migration_dam
+categories: []
+tags:
+ - analysis
+ - water
+ - conservation
+subtitle: ''
+summary: 'Steelhead migration analysis in lower Columbia River Basin.'
+authors: []
+lastmod: '2020-01-09T15:02:28-08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
 ---
 
 ```{r setup, include=FALSE}
@@ -34,20 +49,18 @@ library(forecast)
 ```
 
 
-###Task 2: 
-
 #####1,2] Introductory Summary and Photos
 Steelhead are an important fish within the larger salmonid family that depend on passage up and down the Columbia River Basin to complete its life cycle. 
 
-![**Steelhead Fish.** \n Photo: United States Fish and Wildlife Service, Pacific Region](Fish Data/steelhead.jpg)
+![**Steelhead Fish.** \n Photo: United States Fish and Wildlife Service, Pacific Region](steelhead.jpg)
 
 The lower Columbia River has been blocked by large hydroelectric dams since the early 1900's. Importantly, the lower Columbia and its dynamic waterfalls were once used as historical fishing grounds by the local Native American Tribes, and were also spiritually important for these same groups. With the construction of large dams, both fish populations and cultural heritage were impacted.
 
-![**Celilo Falls - flooded by Dalles Dam, upstream of Bonneville Dam, in 1957.** \n Photo: Gerald W. Williams Collection](Fish Data/Celilo Falls.jpg)
+![**Celilo Falls - flooded by Dalles Dam, upstream of Bonneville Dam, in 1957.** \n Photo: Gerald W. Williams Collection](Celilo Falls.jpg)
 
 Bonneville Dam was constructed in 1934 and is the first river-wide barrier moving upstream from the Pacific. The amount of salmonid species that surpass the dam successfully, in both directions, is important to understand the health of the species over time, especially as new fish ladder and water quality regulations develop. 
 
-![**Bonneville Dam, Columbia River Basin, OR, built in 1934.** \n Photo: Forest Service](Fish Data/bonneville-dam-and-people-fishing.jpg)
+![**Bonneville Dam, Columbia River Basin, OR, built in 1934.** \n Photo: Forest Service](bonneville-dam-and-people-fishing.jpg)
 
 This analysis focuses on Steelhead passage time series data from the Columbia River DART program, although several salmonid species are tracked within this database. In order to understand the health of Steelhead populations, it is important to look at time series data in a variety of ways. The seasonality of Steelhead passage is especially important to consider, as warmer river waters may push passage earlier into the season. 
 
@@ -59,7 +72,7 @@ Citation: Columbia River DART, Columbia Basin Research, University of Washington
 
 **3(A).** Read in data and clean. Ensure time series data is in tsibble compatable format. 
 ```{r}
-salmon_data_all <- read_csv(here::here("Fish Data", "cbr_fish_passage_bonneville_allyrs_steelhead.csv")) %>% 
+salmon_data_all <- read_csv("cbr_fish_passage_bonneville_allyrs_steelhead.csv") %>% 
   clean_names() %>% 
   mutate(location = str_to_lower(location)) %>% #Making location all lower case, column names already lowercase but used clean_names() to get mm-dd into nicer format.
   mutate(date = paste(year, mm_dd, sep = "-")) %>% #Get all date into into one column. 

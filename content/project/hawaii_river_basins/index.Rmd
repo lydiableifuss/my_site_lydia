@@ -1,8 +1,22 @@
 ---
-title: "ESM 244 - Assignment 2"
-author: "Lydia Bleifuss"
-date: "2/16/2020"
-output: html_document
+title: 'Hawaii River Basins'
+author: ''
+date: '2020-01-09'
+slug: hawaii_river_basins
+categories: []
+tags:
+ - analysis
+ - water
+subtitle: ''
+summary: 'Spatial visualization of Hawaiian Island hydrology.'
+authors: []
+lastmod: '2020-01-09T15:02:28-08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
 ---
 
 ```{r setup, include=FALSE}
@@ -32,12 +46,12 @@ library(rmapshaper)
 
 **Read in original shapefiles from Assignment 2 - Part 3 and ensure all are in same crs (coordinate system and projection).** 
 ```{r}
-Watersheds<- read_sf(dsn = here::here("HI Data", "hw watersheds"),
-                 layer = "Watersheds") %>% 
+Watersheds<- read_sf(dsn = ".", 
+                     layer = "Watersheds") %>% 
               st_transform(crs = 4326) %>% 
   select("wuname", "area_sqmi")
 
-land <- read_sf(dsn = here::here("HI Data","Land_Use_Land_Cover_LULC"),
+land <- read_sf(dsn = ".",
                 layer = "Land_Use_Land_Cover_LULC") %>% 
               st_transform(crs = 4326) %>% 
   filter(landcover != 0)
@@ -60,27 +74,27 @@ Industry <- land %>% #Making a dataframe that only includes man-made/industrial/
 
 **Read in additional shapefiles to explore hydrology of Hawaii, to contrast with water oriented landcover dataframe, and ensure all are in same crs (coordinate system and projection).** 
 ```{r}
-dlnr_aquifers<- read_sf(dsn = here::here("HI Data","DLNR_Aquifers_Poly"), #More resource-oriented in nature aquifer boundaries.
+dlnr_aquifers<- read_sf(dsn = ".", #More resource-oriented in nature aquifer boundaries.
                  layer = "DLNR_Aquifers_Poly") %>% 
               st_transform(crs = 4326)
 
-doh_aquifers <- read_sf(dsn = here::here("HI Data","DOH_Aquifers_Polygons"), #More administrative in boundaries. Interesting that they have these two different datasets. 
+doh_aquifers <- read_sf(dsn = ".", #More administrative in boundaries. Interesting that they have these two different datasets. 
                  layer = "DOH_Aquifers_Polygons") %>% 
               st_transform(crs = 4326)
 
-nhd_flowlines <- read_sf(dsn = here::here("HI Data","NHD_Flowlines"), #All HUC 8 flowlines.  
+nhd_flowlines <- read_sf(dsn = ".", #All HUC 8 flowlines.  
                  layer = "NHD_Flowlines") %>% 
               st_transform(crs = 4326)
 
 ms_simplify(nhd_flowlines) #Simplifying flowlines because working with this dataset is too difficult/time consuming as is. 
 #mapview(nhd_flowlines)
  
-Streams <- read_sf(dsn = here::here("HI Data","Streams"),
+Streams <- read_sf(dsn = ".",
                  layer = "Streams") %>% 
               st_transform(crs = 4326) %>% 
   mutate(Stream = str_to_lower(type)) #Type: Perennial (continuous flow) and Non-Perennial (seasonal flows).
 
-Rain <- read_sf(dsn = here::here("HI Data","StateIsohyetsSHP_mm"), #Rain contour lines for all islands, might be interesting to contrast against streams (perennial vs. non). 
+Rain <- read_sf(dsn = ".", #Rain contour lines for all islands, might be interesting to contrast against streams (perennial vs. non). 
                  layer = "isohyet_mm_01") %>% 
               st_transform(crs = 4326)
 ```
